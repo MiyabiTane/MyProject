@@ -13,9 +13,9 @@ def Some2OnePicture(base_img,info):
     height=[0]*len(info)
     for i in range(len(info)):
         if info[i][0]==0:
-            alpha_image='./images2/candy2.png'
-        else:
             alpha_image='./images2/rain.png'
+        else:
+            alpha_image='./images2/candy2.png'
         src[i]=cv2.imread(alpha_image,-1)
         src[i]=cv2.resize(src[i],dsize=(int(info[i][3]),int(info[i][4])))
         width[i], height[i] = src[i].shape[:2]
@@ -33,15 +33,16 @@ def Some2OnePicture(base_img,info):
     return dst
 
 fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
-video = cv2.VideoWriter('./outputs/video_test2.mp4', fourcc, 20.0, (640, 640))
+video = cv2.VideoWriter('./outputs/fall_candy.mp4', fourcc, 20.0, (640, 640))
 
-#ふってくるあめを生成
-time=np.array([0,45])
-x_left=[50,800]
-images=np.array([0,1])
+#ふってくるあめを生成。timeだけ手動でいじる。
+time=np.array([0,5,20,35,35,60,80,90,100,150])
+x_left=np.random.randint(0,900,len(time))
+#▼第２引数を大きくするほどcandyが増える。
+images=np.random.randint(0,3,len(time))
 size=np.zeros((len(time),2))
-size[np.where(images==0)]=[250,250]
-size[np.where(images==1)]=[200,200]
+size[np.where(images==0)]=[200,200]
+size[np.where(images!=0)]=[250,250]
 fall_obs=[]
 #fall_obs[i]にi番目に降るあめの情報を入れる。
 for i in range(len(time)):
