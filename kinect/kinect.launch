@@ -1,0 +1,20 @@
+<launch>
+  <!-- 2019/11/29/ k-okada -->
+  <include file="$(find openni_launch)/launch/openni.launch" />
+  <node pkg="rviz" type="rviz" name="rviz" args="-d /home/mech-user/Desktop/jishupuro/kinect/kinect.rviz" />
+
+  <!-- $ roslaunch jsk_pcl_ros hsi_color_filter.launch DEFAULT_NAMESPACE:=/camera/depth_registered INPUT:=points -->
+  <include file="$(find jsk_pcl_ros)/launch/hsi_color_filter.launch">
+    <arg name="DEFAULT_NAMESPACE" value="/camera/depth_registered" />
+    <arg name="INPUT" value="points" />
+
+    <arg name="h_max" default="127" />
+    <arg name="h_min" default="0" />
+    <arg name="s_max" default="255" />
+    <arg name="s_min" default="128" />
+    <arg name="i_max" default="255" />
+    <arg name="i_min" default="128" />
+
+  </include>
+
+</launch>
