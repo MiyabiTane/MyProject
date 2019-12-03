@@ -23,9 +23,11 @@ def Some2OnePicture(base_img,info):
     height=[0]*len(info)
     for i in range(len(info)):
         if info[i][0]==0:
-            alpha_image='./images2/rain.png'
+            alpha_image='./images3/rain.png'
+        elif info[i][0]==4:
+            alpha_image='./images3/flip_rain.png'
         else:
-            alpha_image='./images2/orange_candy.png'
+            alpha_image='./images3/candy.png'
         src[i]=cv2.imread(alpha_image,-1)
         src[i]=cv2.resize(src[i],dsize=(int(info[i][3]),int(info[i][4])))
         width[i], height[i] = src[i].shape[:2]
@@ -42,10 +44,10 @@ def Some2OnePicture(base_img,info):
     end=pytime.time()-start
     print("time={}".format(end))
     return dst
-
-#fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
-#video = cv2.VideoWriter('./outputs/fall_candy.mp4', fourcc, 20.0, (640, 640))
-
+"""
+cv2.namedWindow('result', cv2.WINDOW_NORMAL)
+cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+"""
 #make ame
 time=np.random.randint(0,250,10)
 x_left=np.random.randint(0,900,len(time))
@@ -53,7 +55,7 @@ x_left=np.random.randint(0,900,len(time))
 images=np.random.randint(0,3,len(time))
 size=np.zeros((len(time),2))
 size[np.where(images==0)]=[200,200]
-size[np.where(images!=0)]=[250,250]
+size[np.where(images!=0)]=[180,180]
 fall_obs=[]
 #info of each ame
 for i in range(len(time)):
@@ -63,7 +65,9 @@ fps = 25
 j=0
 info=np.array([])
 flip_info=np.array([])
+
 while j<=300:
+    flip_rain_info=np.array([])
     start_time = pytime.time()
     if j in time:
         num=np.where(time==j)[0][0]
@@ -72,7 +76,8 @@ while j<=300:
         info.append(fall_obs[num])
         info=np.array(info)
 
-    #when y=500 flip candy
+    #in the last, y=500 -> catch ame right
+    #when y=500 flip candy or rain
     if len(info)>0 and (500 in info[:,2]):
         #remove candy from info
         num_f=np.where(info[:,2]==500)
@@ -85,9 +90,16 @@ while j<=300:
         info=np.array(info)
         #add candy to flip_info
         flip_info=flip_info.tolist()
-        flip_info.append(keep)
+        flip_rain_info=flip_rain_info.tolist()
+        #candy only
+        if keep[0]==0:
+            keep[0]=4
+            flip_rain_info.append(keep)
+        else:
+            flip_info.append(keep)
         flip_info=np.array(flip_info)
-    #print("flip_info_before={}".format(flip_info))
+        flip_rain_info=np.array(flip_rain_info)
+    print("flip_rain_info={}".format(flip_rain_info))
 
     if len(flip_info)>0:
         flip_info[:,1]+=[10]*len(flip_info)
@@ -97,20 +109,22 @@ while j<=300:
         num_4=np.where(flip_info[:,1]>flip_info[:,5])
         flip_info[num_4,2]+=[10]*len(num_4[0])
         #flip_info[:,2]=parabola(a=0.5,x_left=flip_info[:,1],y_up=flip_info[:,2],x_cen=flip_info[:,5],y_plus=10)
-    flip_info=np.array([l for l in flip_info if (l[1]<1000 and l[2]<1000)])
+    flip_info=np.array([l for l in flip_info if (l[1]<1100 and l[2]<1100)])
     print("flip_info={}".format(flip_info))
 
-    #remove fallen ame max:1000
-    info=np.array([i for i in info if i[2]<1000])
+    #remove fallen ame max:1100
+    info=np.array([i for i in info if i[2]<1100])
     info=np.array(info)
     if len(info)>0:
         info[:,2]+=[10]*len(info)
     print("info={}".format(info))
 
-    img_1=Some2OnePicture('./images2/sky.jpg',info)
+    img_1=Some2OnePicture('./images3/sky.jpg',info)
     cv2.imwrite('./outputs/test_1201.jpg',img_1)
-    img=Some2OnePicture('./outputs/test_1201.jpg',flip_info)
-    img = cv2.resize(img, (640,640))
+    img_2=Some2OnePicture('./outputs/test_1201.jpg',flip_info)
+    cv2.imwrite('./outputs/test_1203.jpg',img_2)
+    img=Some2OnePicture('./outputs/test_1203.jpg',flip_rain_info)
+    img = cv2.resize(img, (640,480))
 
     cv2.imshow("result",img)
     end_time = pytime.time()
