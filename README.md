@@ -31,18 +31,18 @@ Delete -> これでアルファチャンネル画像が作成できる。<br>
 * 方法その１<br>
 Kinectで写真と同じ画像を認識して/object_pose使う。<br>
 ```bash
-$ source ~/semi_ws/devel/setup.bash
-$ roslaunch openni_launch openni.launch camera:=head_camera
-$ roslaunch recog_umbrella.launch
+ source ~/semi_ws/devel/setup.bash
+ roslaunch openni_launch openni.launch camera:=head_camera
+ roslaunch recog_umbrella.launch
 ```
 * 方法その２<br>
 ROSのBoundingBoxArrayを使う。<br>
 ```bash
-$ roslaunch kinect.launch
+ roslaunch kinect.launch
 ```
 パラメータ調節したいときは<br>
 ```bash
-$ rosrun rqt_reconfigure rqt_reconfigure
+ rosrun rqt_reconfigure rqt_reconfigure
 ```
 役に立つか不明だけど[ここ](https://www.color-sample.com/colors/397/)にHSL(HSI?)の色見本が載っている。<br>
 
@@ -56,17 +56,24 @@ $ rosrun rqt_reconfigure rqt_reconfigure
 * 方法その３<br>
 方法その１とその２は失敗したのでCoral TPUの情報をSubscribeする。<br>
 ```bash
-$ source /opt/ros/melodic/setup.bash
-$ rosrun usb_cam usb_cam_node
+ roscore
 ```
 ```bash
-$ source /opt/ros/melodic/setup.bash
-$ source ~/coral_ws/devel/setup.bash
-$ roslaunch coral_usb edgetpu_object_detector.launch INPUT_IMAGE:=/usb_cam/image_raw
+ source /opt/ros/melodic/setup.bash
+ rosrun usb_cam usb_cam_node
 ```
 ```bash
-$ source /opt/ros/melodic/setup.bash
-$ rosrun image_view image_view image:=/edgetpu_object_detector/output/image
+ source /opt/ros/melodic/setup.bash
+ source ~/coral_ws/devel/setup.bash
+ roslaunch coral_usb edgetpu_object_detector.launch INPUT_IMAGE:=/usb_cam/image_raw
+```
+```bash
+ source /opt/ros/melodic/setup.bash
+ rosrun image_view image_view image:=/edgetpu_object_detector/output/image
+```
+パラメータをいじるなら<br>
+```bash
+ rosrun rqt_reconfigure rqt_reconfigure
 ```
 
 ### 〜ハード編〜
