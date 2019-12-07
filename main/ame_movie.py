@@ -35,16 +35,17 @@ def Some2OnePicture(base_img,info):
         dst[int(info[i][2]):int(info[i][2]+height[i]),int(info[i][1]):int(info[i][1]+width[i])] *= 1 - mask[i]
         dst[int(info[i][2]):int(info[i][2]+height[i]),int(info[i][1]):int(info[i][1]+width[i])] += src[i] * mask[i]
     end=pytime.time()-start
-    print("time={}".format(end))
+    #print("time={}".format(end))
     return dst
 
 def fall_ame(um_pos_x,um_pos_y):
+    #full screen
     #cv2.namedWindow('result', cv2.WINDOW_NORMAL)
     #cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     #make ame
     time=np.random.randint(0,250,20)
-    x_left=np.random.randint(0,900,len(time))
-    #x_left=[670]*len(time)
+    x_left=np.random.randint(100,1000,len(time))
+    #x_left=[579]*len(time)
     #pitch candy:rain
     images=np.random.randint(0,3,len(time))
     size=np.zeros((len(time),2))
@@ -59,9 +60,12 @@ def fall_ame(um_pos_x,um_pos_y):
     j=0
     info=np.array([])
     flip_info_r=np.array([])
+    flip_info_l=np.array([])
+    flip_info_rfar=np.array([])
+    flip_info_lfar=np.array([])
 
     while j<=300:
-        flip_rain_info_r=np.array([])
+        flip_rain_info=np.array([])
         start_time = pytime.time()
         if j in time:
             num=np.where(time==j)[0][0]
@@ -71,47 +75,130 @@ def fall_ame(um_pos_x,um_pos_y):
             info=np.array(info)
 
         # think the relationship with umbrella
-        if len(info)>0 and len(np.where(info[:,2]>um_pos_y)[0])>0:
+        if len(info)>0 and len(np.where(info[:,2]==um_pos_y)[0])>0:
             #remove candy from info
-            num_f=np.where(info[:,2]>um_pos_y)
-            keep_r=info[num_f[0][0]]
-            keep_r=keep_r.tolist()
+            num_f=np.where(info[:,2]==um_pos_y)
+            keep=info[num_f[0][0]]
+            keep=keep.tolist()
 
-            if um_pos_x<keep_r[1] and keep_r[1]<um_pos_x+100 and keep_r[2]<um_pos_y+100:
+            if um_pos_x-70<=keep[1] and keep[1]<um_pos_x+100:
             #x_center of parabola
-                keep_r.append(keep_r[1]+80)
+                keep.append(keep[1]+80)
                 info=info.tolist()
                 info.pop(num_f[0][0])
                 info=np.array(info)
                 #add candy to flip_info
                 flip_info_r=flip_info_r.tolist()
-                flip_rain_info_r=flip_rain_info_r.tolist()
+                flip_rain_info=flip_rain_info.tolist()
                 #candy only
-                if keep_r[0]==0:
-                    keep_r[0]=4
-                    flip_rain_info_r.append(keep_r)
+                if keep[0]==0:
+                    keep[0]=4
+                    flip_rain_info.append(keep)
                 else:
-                    flip_info_r.append(keep_r)
-            flip_info_r=np.array(flip_info_r)
-            flip_rain_info_r=np.array(flip_rain_info_r)
-        print("flip_rain_info_r={}".format(flip_rain_info_r))
+                    flip_info_r.append(keep)
+
+            elif um_pos_x-170<=keep[1] and keep[1]<um_pos_x-70:
+                #x_centerof parabola
+                keep.append(keep[1]-80)
+                info=info.tolist()
+                info.pop(num_f[0][0])
+                info=np.array(info)
+                #add candy to flip info
+                flip_info_l=flip_info_l.tolist()
+                flip_rain_info=flip_rain_info.tolist()
+                #candy only
+                if keep[0]==0:
+                    keep[0]=4
+                    flip_rain_info.append(keep)
+                else:
+                    flip_info_l.append(keep)
+
+            elif um_pos_x+100<=keep[1] and keep[1]<um_pos_x+200:
+                #x_centerof parabola
+                keep.append(keep[1]+100)
+                info=info.tolist()
+                info.pop(num_f[0][0])
+                info=np.array(info)
+                #add candy to flip info
+                flip_info_rfar=flip_info_rfar.tolist()
+                flip_rain_info=flip_rain_info.tolist()
+                #candy only
+                if keep[0]==0:
+                    keep[0]=4
+                    flip_rain_info.append(keep)
+                else:
+                    flip_info_rfar.append(keep)
+
+            elif um_pos_x-270<=keep[1] and keep[1]<um_pos_x-170:
+                #x_centerof parabola
+                keep.append(keep[1]-100)
+                info=info.tolist()
+                info.pop(num_f[0][0])
+                info=np.array(info)
+                #add candy to flip info
+                flip_info_lfar=flip_info_lfar.tolist()
+                flip_rain_info=flip_rain_info.tolist()
+                #candy only
+                if keep[0]==0:
+                    keep[0]=4
+                    flip_rain_info.append(keep)
+                else:
+                    flip_info_lfar.append(keep)
+
+
+            flip_info_r=np.array((flip_info_r),dtype=np.int)
+            flip_info_l=np.array((flip_info_l),dtype=np.int)
+            flip_info_rfar=np.array((flip_info_rfar),dtype=np.int)
+            flip_info_lfar=np.array((flip_info_lfar),dtype=np.int)
+            flip_rain_info=np.array((flip_rain_info),dtype=np.int)
+        print("flip_rain_info={}".format(flip_rain_info))
 
         if len(flip_info_r)>0:
-            flip_info_r[:,1]+=[10]*len(flip_info_r)
+            flip_info_r[:,1]+=np.array([10]*len(flip_info_r),dtype=np.int)
             #make parabola
             num_3=np.where(flip_info_r[:,1]<flip_info_r[:,5])
-            flip_info_r[num_3,2]-=[20]*len(num_3[0])
+            flip_info_r[num_3,2]-=np.array([20]*len(num_3[0]),dtype=np.int)
             num_4=np.where(flip_info_r[:,1]>flip_info_r[:,5])
-            flip_info_r[num_4,2]+=[10]*len(num_4[0])
+            flip_info_r[num_4,2]+=np.array([10]*len(num_4[0]),dtype=np.int)
             #flip_info[:,2]=parabola(a=0.5,x_left=flip_info[:,1],y_up=flip_info[:,2],x_cen=flip_info[:,5],y_plus=10)
         flip_info_r=np.array([l for l in flip_info_r if (l[1]<1100 and l[2]<1100)])
         print("flip_info_r={}".format(flip_info_r))
 
+        if len(flip_info_l)>0:
+            flip_info_l[:,1]-=np.array([10]*len(flip_info_l),dtype=np.int)
+            #make parabola
+            num_5=np.where(flip_info_l[:,1]>flip_info_l[:,5])
+            flip_info_l[num_5,2]-=np.array([20]*len(num_5[0]),dtype=np.int)
+            num_6=np.where(flip_info_l[:,1]<flip_info_l[:,5])
+            flip_info_l[num_6,2]+=np.array([10]*len(num_6[0]),dtype=np.int)
+        flip_info_l=np.array([l for l in flip_info_l if (0<l[1] and l[2]<1100)])
+        print("flip_info_l={}".format(flip_info_l))
+
+        if len(flip_info_rfar)>0:
+            flip_info_rfar[:,1]+=np.array([10]*len(flip_info_rfar),dtype=np.int)
+            #make parabola
+            num_7=np.where(flip_info_rfar[:,1]<flip_info_rfar[:,5])
+            flip_info_rfar[num_7,2]-=np.array([5]*len(num_7[0]),dtype=np.int)
+            num_8=np.where(flip_info_rfar[:,1]>flip_info_rfar[:,5])
+            flip_info_rfar[num_8,2]+=np.array([5]*len(num_8[0]),dtype=np.int)
+        flip_info_rfar=np.array([l for l in flip_info_rfar if (l[1]<1100 and l[2]<1100)])
+        print("flip_info_rfar={}".format(flip_info_rfar))
+
+        if len(flip_info_lfar)>0:
+            flip_info_lfar[:,1]-=np.array([10]*len(flip_info_lfar),dtype=np.int)
+            #make parabola
+            num_9=np.where(flip_info_lfar[:,1]>flip_info_lfar[:,5])
+            flip_info_lfar[num_9,2]-=np.array([5]*len(num_9[0]),dtype=np.int)
+            num_6=np.where(flip_info_lfar[:,1]<flip_info_lfar[:,5])
+            flip_info_lfar[num_6,2]+=np.array([5]*len(num_6[0]),dtype=np.int)
+        flip_info_lfar=np.array(([l for l in flip_info_lfar if (0<l[1] and l[2]<1100)]),dtype=np.int)
+        print("flip_info_lfar={}".format(flip_info_lfar))
+
         #remove fallen ame max:1100
-        info=np.array([i for i in info if i[2]<1100])
+        info=np.array(([i for i in info if i[2]<1100]),dtype=np.int)
         info=np.array(info)
         if len(info)>0:
-            info[:,2]+=[10]*len(info)
+            info[:,2]+=np.array([10]*len(info),dtype=np.int)
         print("info={}".format(info))
 
 
@@ -119,7 +206,13 @@ def fall_ame(um_pos_x,um_pos_y):
         cv2.imwrite('./outputs/test_1201.jpg',img_1)
         img_2=Some2OnePicture('./outputs/test_1201.jpg',flip_info_r)
         cv2.imwrite('./outputs/test_1203.jpg',img_2)
-        img=Some2OnePicture('./outputs/test_1203.jpg',flip_rain_info_r)
+        img_3=Some2OnePicture('./outputs/test_1203.jpg',flip_info_l)
+        cv2.imwrite('./outputs/test_1207.jpg',img_3)
+        img_4=Some2OnePicture('./outputs/test_1207.jpg',flip_info_rfar)
+        cv2.imwrite('./outputs/test_1207_2.jpg',img_4)
+        img_5=Some2OnePicture('./outputs/test_1207_2.jpg',flip_info_lfar)
+        cv2.imwrite('./outputs/test_1207_3.jpg',img_5)
+        img=Some2OnePicture('./outputs/test_1207_3.jpg',flip_rain_info)
         img = cv2.resize(img, (640,480))
 
         cv2.imshow("result",img)
@@ -132,4 +225,4 @@ def fall_ame(um_pos_x,um_pos_y):
             break
         j+=1
 
-fall_ame(650,650)
+fall_ame(-10,650)
