@@ -46,7 +46,7 @@ ROSのBoundingBoxArrayを使う。<br>
 ```
 役に立つか不明だけど[ここ](https://www.color-sample.com/colors/397/)にHSL(HSI?)の色見本が載っている。<br>
 
-* プロジェクターの画像の認識->プロジェクターからの映像とカメラの映像の画角を合わせて比で位置を計算する。<br>
+  * プロジェクターの画像の認識->プロジェクターからの映像とカメラの映像の画角を合わせて比で位置を計算する。<br>
 
 \-----pythonでやるなら-----<br>
 [参考になりそうなサイト](https://docs.opencv.org/master/d7/d6f/tutorial_kinect_openni.html)<br>
@@ -85,7 +85,9 @@ ROSのBoundingBoxArrayを使う。<br>
 
 ### Raspberry piの基本<br>
 ラズパイのセットアップやピンの位置など、ラズパイの詳細については[BDMのREADME.md](https://github.com/MiyabiTane/BDM)参照。<br>
+Ubuntuにすると使えなくなる機能があるので今回はRasbianでOSC通信を行うことにする。<br>
 
+-----------------Ubuntuでやりたい人は↓-------------------------------<br>
 ただし、今回はROSを使うためにUbuntu Mateをいれたいので、MicroSDのセットアップでは以下に従う。<br>
 [公式ページ](https://www.raspberrypi.org/downloads/)でUbuntu MATEをダウンロードする。
 PCのUbuntuでターミナルを開く。まず、SDカードを挿したときと挿さない時とで
