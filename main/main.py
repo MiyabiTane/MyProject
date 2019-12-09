@@ -22,8 +22,8 @@ if __name__=='__main__':
                 print("message_arrived")
 
                 #full screen
-                cv2.namedWindow('result', cv2.WINDOW_NORMAL)
-                cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                #cv2.namedWindow('result', cv2.WINDOW_NORMAL)
+                #cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                 #make ame
                 time=np.random.randint(0,250,20)
                 x_left=np.random.randint(100,1000,len(time))
@@ -48,7 +48,8 @@ if __name__=='__main__':
                 flip_info_rfar=np.array([])
                 flip_info_lfar=np.array([])
 
-                while j<=300:
+                while True:
+                    print("j={}".format(j))
                     flip_rain_info=np.array([])
                     start_time = pytime.time()
 
@@ -85,17 +86,67 @@ if __name__=='__main__':
                         info=np.array(info)
 
                     #flip again
+                    #right right
                     if len(flip_info_r)>0 and len(np.where((um_pos_y-50<flip_info_r[:,2]) & (flip_info_r[:,2]<um_pos_y+50))[0])>0:
                         num_fr=np.where((um_pos_y-50<flip_info_r[:,2]) & (flip_info_r[:,2]<um_pos_y+50))[0]
                         for k in range(len(num_fr)):
                             keep=flip_info_r[num_fr[k]]
                             keep=keep.tolist()
-                            if um_pos_x-70<=flip_info_r[k][1] and flip_info_r[k][1]<um_pos_x+130:
+                            if um_pos_x-70<=flip_info_r[k][1] and flip_info_r[k][1]<um_pos_x+140:
                                 keep[5]=keep[1]+100
+                                flip_info_r=np.array(flip_info_r)
                                 flip_info_r=flip_info_r.tolist()
                                 flip_info_r.pop(num_fr[k])
                                 flip_info_r.append(keep)
                                 flip_info_r=np.array(flip_info_r)
+
+                    #right left
+                    if len(flip_info_r)>0 and len(np.where((um_pos_y-50<flip_info_r[:,2]) & (flip_info_r[:,2]<um_pos_y+50))[0])>0:
+                        num_fr=np.where((um_pos_y-50<flip_info_r[:,2]) & (flip_info_r[:,2]<um_pos_y+50))[0]
+                        for k in range(len(num_fr)):
+                            keep=flip_info_r[num_fr[k]]
+                            keep=keep.tolist()
+                            if um_pos_x-280<=flip_info_r[k][1] and flip_info_r[k][1]<um_pos_x-70:
+                                keep[5]=keep[1]-100
+                                flip_info_r=np.array(flip_info_r)
+                                flip_info_r=flip_info_r.tolist()
+                                flip_info_r.pop(num_fr[k])
+                                flip_info_l=np.array(flip_info_l)
+                                flip_info_l=flip_info_l.tolist()
+                                flip_info_l.append(keep)
+                                flip_info_r=np.array(flip_info_r)
+                                flip_info_l=np.array(flip_info_l)
+
+                    #left left
+                    if len(flip_info_l)>0 and len(np.where((um_pos_y-50<flip_info_l[:,2]) & (flip_info_l[:,2]<um_pos_y+50))[0])>0:
+                        num_fl=np.where((um_pos_y-50<flip_info_l[:,2]) & (flip_info_l[:,2]<um_pos_y+50))[0]
+                        for k in range(len(num_fl)):
+                            keep=flip_info_l[num_fl[k]]
+                            keep=keep.tolist()
+                            if um_pos_x-280<=flip_info_l[k][1] and flip_info_l[k][1]<um_pos_x-70:
+                                keep[5]=keep[1]-100
+                                flip_info_l=np.array(flip_info_l)
+                                flip_info_l=flip_info_l.tolist()
+                                flip_info_l.pop(num_fl[k])
+                                flip_info_l.append(keep)
+                                flip_info_l=np.array(flip_info_l)
+
+                    #left right
+                    if len(flip_info_l)>0 and len(np.where((um_pos_y-50<flip_info_l[:,2]) & (flip_info_l[:,2]<um_pos_y+50))[0])>0:
+                        num_fl=np.where((um_pos_y-50<flip_info_l[:,2]) & (flip_info_l[:,2]<um_pos_y+50))[0]
+                        for k in range(len(num_fl)):
+                            keep=flip_info_l[num_fl[k]]
+                            keep=keep.tolist()
+                            if um_pos_x-70<=flip_info_l[k][1] and flip_info_l[k][1]<um_pos_x+140:
+                                keep[5]=keep[1]+100
+                                flip_info_l=np.array(flip_info_l)
+                                flip_info_l=flip_info_l.tolist()
+                                flip_info_l.pop(num_fl[k])
+                                flip_info_r=np.array(flip_info_r)
+                                flip_info_r=flip_info_r.tolist()
+                                flip_info_l.append(keep)
+                                flip_info_r=np.array(flip_info_r)
+                                flip_info_l=np.array(flip_info_l)
 
                     # think the relationship with umbrella
                     if len(info)>0 and len(np.where((um_pos_y-50<info[:,2]) & (info[:,2]<um_pos_y+50))[0])>0:
@@ -104,7 +155,7 @@ if __name__=='__main__':
                         for m in range(len(num_f)):
                             keep=info[num_f[m]]
                             keep=keep.tolist()
-                            if um_pos_x-70<=keep[1] and keep[1]<um_pos_x+130:
+                            if um_pos_x-70<=keep[1] and keep[1]<um_pos_x+140:
                             #x_center of parabola
                                 keep.append(keep[1]+100)
                                 info=info.tolist()
@@ -116,13 +167,13 @@ if __name__=='__main__':
                                 #candy only
                                 if keep[0]==0:
                                     keep[0]=4
-                                    flip_rain_info.tolist()
+                                    flip_rain_info=flip_rain_info.tolist()
                                     flip_rain_info.append(keep)
                                 else:
-                                    flip_info_r.tolist()
+                                    flip_info_r=flip_info_r.tolist()
                                     flip_info_r.append(keep)
 
-                            elif um_pos_x-270<=keep[1] and keep[1]<um_pos_x-70:
+                            elif um_pos_x-280<=keep[1] and keep[1]<um_pos_x-70:
                                 #x_centerof parabola
                                 keep.append(keep[1]-100)
                                 info=info.tolist()
@@ -134,13 +185,13 @@ if __name__=='__main__':
                                 #candy only
                                 if keep[0]==0:
                                     keep[0]=4
-                                    flip_rain_info.tolist()
+                                    flip_rain_info=flip_rain_info.tolist()
                                     flip_rain_info.append(keep)
                                 else:
-                                    flip_info_l.tolist()
+                                    flip_info_l=flip_info_l.tolist()
                                     flip_info_l.append(keep)
 
-                            elif um_pos_x+130<=keep[1] and keep[1]<um_pos_x+330:
+                            elif um_pos_x+140<=keep[1] and keep[1]<um_pos_x+280:
                                 #x_centerof parabola
                                 keep.append(keep[1]+120)
                                 info=info.tolist()
@@ -153,13 +204,13 @@ if __name__=='__main__':
                                 #candy only
                                 if keep[0]==0:
                                     keep[0]=4
-                                    flip_rain_info.tolist()
+                                    flip_rain_info=flip_rain_info.tolist()
                                     flip_rain_info.append(keep)
                                 else:
-                                    flip_info_rfar.tolist()
+                                    flip_info_rfar=flip_info_rfar.tolist()
                                     flip_info_rfar.append(keep)
 
-                            elif um_pos_x-470<=keep[1] and keep[1]<um_pos_x-270:
+                            elif um_pos_x-420<=keep[1] and keep[1]<um_pos_x-280:
                                 #x_centerof parabola
                                 keep.append(keep[1]-120)
                                 info=info.tolist()
@@ -171,10 +222,10 @@ if __name__=='__main__':
                                 #candy only
                                 if keep[0]==0:
                                     keep[0]=4
-                                    flip_rain_info.tolist()
+                                    flip_rain_info=flip_rain_info.tolist()
                                     flip_rain_info.append(keep)
                                 else:
-                                    flip_info_lfar.tolist()
+                                    flip_info_lfar=flip_info_lfar.tolist()
                                     flip_info_lfar.append(keep)
 
 
@@ -227,7 +278,17 @@ if __name__=='__main__':
                     print("flip_info_lfar={}".format(flip_info_lfar))
 
                     #remove fallen ame max:1100
-                    info=np.array(([i for i in info if i[2]<1100]),dtype=np.int)
+                    #rain flip
+                    if len(info)>0 and len(np.where(info[:,2]==1100)[0])>0:
+                        num_rain=np.where(info[:,2]==1100)[0]
+                        for m in num_rain:
+                            if info[m][0]==0:
+                                flip_rain_info=np.array(flip_rain_info)
+                                flip_rain_info=flip_rain_info.tolist()
+                                info[m][0]=4
+                                flip_rain_info.append(info[m])
+
+                    info=np.array(([i for i in info if i[2]<=1100]),dtype=np.int)
                     info=np.array(info)
                     if len(info)>0:
                         info[:,2]+=np.array([10]*len(info),dtype=np.int)
@@ -256,7 +317,8 @@ if __name__=='__main__':
                     if cv2.waitKey(wait_time) >= 0:
                         break
                     j+=1
-
+                    if j==100:
+                        rospy.is_shutdown()
             message_arrived=False
             rospy.sleep(0.1)
 
