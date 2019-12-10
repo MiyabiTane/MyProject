@@ -23,8 +23,8 @@ if __name__=='__main__':
             if message_arrived:
                 print("message_arrived")
                 #full screen
-                #cv2.namedWindow('result', cv2.WINDOW_NORMAL)
-                #cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                cv2.namedWindow('result', cv2.WINDOW_NORMAL)
+                cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                 #make ame
                 time=np.random.randint(0,250,20)
                 x_left=np.random.randint(340,820,len(time))
@@ -100,12 +100,11 @@ if __name__=='__main__':
                                 pakkun_list=pakkun_list.tolist()
                                 pakkun_list.append([7,900,800,400,400])
                                 pakkun_list.append([9,900,700,200,200])
-                                flip_info_r=np.array(flip_info_r)
-                                flip_info_r=flip_info_r.tolist()
-                                flip_info_r.pop(k)
+                                flip_info_r[k][4]=0
                                 pakkun_list=np.array(pakkun_list)
-                                flip_info_r=np.array(flip_info_r)
                                 point+=2
+
+                        flip_info_r=np.array(([l for l in flip_info_r if l[4]!=0]),dtype=np.int)
 
 
                     if len(flip_info_rfar)>0 and len(np.where((730<=flip_info_rfar[:,2]) & (flip_info_rfar[:,2]<=1030))[0])>0:
@@ -118,12 +117,12 @@ if __name__=='__main__':
                                 pakkun_list=pakkun_list.tolist()
                                 pakkun_list.append([7,900,800,400,400])
                                 pakkun_list.appned([9,900,700,250,250])
-                                flip_info_rfar=np.array(flip_info_rfar)
-                                flip_info_rfar=flip_info_rfar.tolist()
-                                flip_info_rfar.pop(k)
+                                flip_info_rfar[k][4]=0
                                 pakkun_list=np.array(pakkun_list)
                                 flip_info_rfar=np.array(flip_info_rfar)
                                 point+=2
+                        flip_info_rfar=np.array(([l for l in flip_info_rfar if l[4]!=0]),dtype=np.int)
+
 
                     if len(flip_info_l)>0 and len(np.where((730<=flip_info_l[:,2]) & (flip_info_l[:,2]<=1030))[0])>0:
                         num_g=np.where((730<=flip_info_l[:,2]) & (flip_info_l[:,2]<=1030))[0]
@@ -135,12 +134,10 @@ if __name__=='__main__':
                                 pakkun_list=pakkun_list.tolist()
                                 pakkun_list.append([8,0,800,400,400])
                                 pakkun_list.append([9,150,700,250,250])
-                                flip_info_l=np.array(flip_info_l)
-                                flip_info_l=flip_info_l.tolist()
-                                flip_info_l.pop(k)
+                                flip_info_l[k][4]=0
                                 pakkun_list=np.array(pakkun_list)
-                                flip_info_l=np.array(flip_info_l)
                                 point+=2
+                        flip_info_l=np.array(([l for l in flip_info_l if l[4]!=0]),dtype=np.int)
 
                     if len(flip_info_lfar)>0 and len(np.where((730<=flip_info_lfar[:,2]) & (flip_info_lfar[:,2]<=1030))[0])>0:
                         num_g=np.where((730<=flip_info_lfar[:,2]) & (flip_info_lfar[:,2]<=1030))[0]
@@ -152,12 +149,11 @@ if __name__=='__main__':
                                 pakkun_list=pakkun_list.tolist()
                                 pakkun_list.append([8,0,800,400,400])
                                 pakkun_list.append([9,150,700,250,250])
-                                flip_info_lfar=np.array(flip_info_lfar)
-                                flip_info_lfar=flip_info_lfar.tolist()
-                                flip_info_lfar.pop(k)
+                                flip_info_lfar[k][4]=0
                                 pakkun_list=np.array(pakkun_list)
-                                flip_info_lfar=np.array(flip_info_lfar)
                                 point+=2
+                        flip_info_lfar=np.array(([l for l in flip_info_lfar if l[4]!=0]),dtype=np.int)
+
 
                     #flip again
                     #right right
@@ -168,11 +164,11 @@ if __name__=='__main__':
                             keep=keep.tolist()
                             if um_pos_x-70<=flip_info_r[k][1] and flip_info_r[k][1]<um_pos_x+140:
                                 keep[5]=keep[1]+100
+                                flip_info_r[num_fr[k]][4]=0
                                 flip_info_r=np.array(flip_info_r)
                                 flip_info_r=flip_info_r.tolist()
-                                flip_info_r.pop(num_fr[k])
                                 flip_info_r.append(keep)
-                                flip_info_r=np.array(flip_info_r)
+                        flip_info_r=np.array(([l for l in flip_info_r if l[4]!=0]),dtype=np.int)
 
                     #right left
                     if len(flip_info_r)>0 and len(np.where((um_pos_y-50<flip_info_r[:,2]) & (flip_info_r[:,2]<um_pos_y+50))[0])>0:
@@ -182,14 +178,13 @@ if __name__=='__main__':
                             keep=keep.tolist()
                             if um_pos_x-280<=flip_info_r[k][1] and flip_info_r[k][1]<um_pos_x-70:
                                 keep[5]=keep[1]-100
-                                flip_info_r=np.array(flip_info_r)
-                                flip_info_r=flip_info_r.tolist()
-                                flip_info_r.pop(num_fr[k])
+                                flip_info_r[num_fr[k]][4]=0
                                 flip_info_l=np.array(flip_info_l)
                                 flip_info_l=flip_info_l.tolist()
                                 flip_info_l.append(keep)
-                                flip_info_r=np.array(flip_info_r)
                                 flip_info_l=np.array(flip_info_l)
+                        flip_info_r=np.array(([l for l in flip_info_r if l[4]!=0]),dtype=np.int)
+
 
                     #left left
                     if len(flip_info_l)>0 and len(np.where((um_pos_y-50<flip_info_l[:,2]) & (flip_info_l[:,2]<um_pos_y+50))[0])>0:
@@ -201,9 +196,9 @@ if __name__=='__main__':
                                 keep[5]=keep[1]-100
                                 flip_info_l=np.array(flip_info_l)
                                 flip_info_l=flip_info_l.tolist()
-                                flip_info_l.pop(num_fl[k])
+                                flip_info_l[num_fl[k]][4]=0
                                 flip_info_l.append(keep)
-                                flip_info_l=np.array(flip_info_l)
+                        flip_info_l=np.array(([l for l in flip_info_l if l[4]!=0]),dtype=np.int)
 
                     #left right
                     if len(flip_info_l)>0 and len(np.where((um_pos_y-50<flip_info_l[:,2]) & (flip_info_l[:,2]<um_pos_y+50))[0])>0:
@@ -213,14 +208,13 @@ if __name__=='__main__':
                             keep=keep.tolist()
                             if um_pos_x-70<=flip_info_l[k][1] and flip_info_l[k][1]<um_pos_x+140:
                                 keep[5]=keep[1]+100
-                                flip_info_l=np.array(flip_info_l)
-                                flip_info_l=flip_info_l.tolist()
-                                flip_info_l.pop(num_fl[k])
+                                flip_info_l[num_fl[k]][4]=0
                                 flip_info_r=np.array(flip_info_r)
                                 flip_info_r=flip_info_r.tolist()
-                                flip_info_l.append(keep)
+                                flip_info_r.append(keep)
                                 flip_info_r=np.array(flip_info_r)
-                                flip_info_l=np.array(flip_info_l)
+                        flip_info_l=np.array(([l for l in flip_info_l if l[4]!=0]),dtype=np.int)
+
 
                     # think the relationship with umbrella
                     if len(info)>0 and len(np.where((um_pos_y-50<info[:,2]) & (info[:,2]<um_pos_y+50))[0])>0:
@@ -232,9 +226,8 @@ if __name__=='__main__':
                             if um_pos_x-70<=keep[1] and keep[1]<um_pos_x+140:
                             #x_center of parabola
                                 keep.append(keep[1]+90)
-                                info=info.tolist()
-                                info.pop(num_f[m])
-                                info=np.array(info)
+                                #remove ame from info
+                                info[num_f[m]][4]=0
                                 #add candy to flip_info
                                 flip_info_r=np.array(flip_info_r)
                                 flip_rain_info=np.array(flip_rain_info)
@@ -252,9 +245,8 @@ if __name__=='__main__':
                             elif um_pos_x-280<=keep[1] and keep[1]<um_pos_x-70:
                                 #x_centerof parabola
                                 keep.append(keep[1]-90)
-                                info=info.tolist()
-                                info.pop(num_f[m])
-                                info=np.array(info)
+                                #remove ame from info
+                                info[num_f[m]][4]=0
                                 #add candy to flip info
                                 flip_info_l=np.array(flip_info_l)
                                 flip_rain_info=np.array(flip_rain_info)
@@ -272,9 +264,8 @@ if __name__=='__main__':
                             elif um_pos_x+140<=keep[1] and keep[1]<um_pos_x+280:
                                 #x_centerof parabola
                                 keep.append(keep[1]+110)
-                                info=info.tolist()
-                                info.pop(num_f[m])
-                                info=np.array(info)
+                                #remove
+                                info[num_f[m]][4]=0
                                 #to avoid error list.tolist()
                                 flip_rain_info=np.array(flip_rain_info)
                                 flip_info_rfar=np.array(flip_info_rfar)
@@ -293,9 +284,8 @@ if __name__=='__main__':
                             elif um_pos_x-420<=keep[1] and keep[1]<um_pos_x-280:
                                 #x_centerof parabola
                                 keep.append(keep[1]-110)
-                                info=info.tolist()
-                                info.pop(num_f[m])
-                                info=np.array(info)
+                                #remove
+                                info[num_f[m]][4]=0
                                 #add candy to flip info
                                 flip_info_lfar=np.array(flip_info_lfar)
                                 flip_rain_info=np.array(flip_rain_info)
@@ -310,7 +300,7 @@ if __name__=='__main__':
                                     flip_info_lfar=flip_info_lfar.tolist()
                                     flip_info_lfar.append(keep)
 
-
+                        info=np.array(([l for l in info if l[4]!=0]),dtype=np.int)
                         flip_info_r=np.array((flip_info_r),dtype=np.int)
                         flip_info_l=np.array((flip_info_l),dtype=np.int)
                         flip_info_rfar=np.array((flip_info_rfar),dtype=np.int)
