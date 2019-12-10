@@ -3,7 +3,10 @@ from jsk_recognition_msgs.msg import RectArray
 from jsk_recognition_msgs.msg import Rect
 import numpy as np
 import ame_movie
+import signal
 
+global flag
+flag=0
 message_arrived=False
 def position_cb(msg):
     global message_arrived
@@ -11,11 +14,15 @@ def position_cb(msg):
 
 if __name__=='__main__':
     try:
+        count=0
         message_arrived=False
         rospy.init_node('umbrella_pos')
         rospy.Subscriber('/edgetpu_object_detector/output/rects',RectArray,position_cb)
-        while not rospy.is_shutdown():
+        while not rospy.is_shutdown() and flag==0:
             if message_arrived:
+                count+=1
+                print("flag={}".format(flag))
+                print("count={}".format(count))
                 print("message_arrived")
                 #rects=[info1,info2...]
                 if len(message_arrived.rects)>0:
@@ -37,6 +44,9 @@ if __name__=='__main__':
                     #ame_movie.fall_ame(um_pos_x,um_pos_y)
 
                     print("x={},y={}".format(um_pos_x,um_pos_y))
+
+            if count==20:
+                flag=1
 
             message_arrived=False
             rospy.sleep(0.5)
