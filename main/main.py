@@ -61,13 +61,18 @@ if __name__=='__main__':
                     if len(message_arrived.rects)>0:
                         x_min=10000
                         umb_index=100
+                        #for simulation in house
+                        for i in range(len(message_arrived.rects)):
+                            if message_arrived.rects[i].x<x_min:
+                                umb_index=i
+                        """
                         #umbrella's x is min
                         for i in range(len(message_arrived.rects)):
                             #umbrella : 150<width<200 y~=115
-                            if message_arrived.rects[i].x<x_min and message_arrived.rects[i].height<150:
+                            if message_arrived.rects[i].height<150 and message_arrived.rects[i].width<250:
                                 umb_index=i
-                                x_min=message_arrived.rects[i].x
                         #print("rects={}".format(message_arrived.rects[umb_index]))
+                        """
 
                         if umb_index!=100:
                             um_pos_x=message_arrived.rects[umb_index].x+message_arrived.rects[umb_index].width/2
@@ -116,10 +121,9 @@ if __name__=='__main__':
                                 pakkun_list=np.array(pakkun_list)
                                 pakkun_list=pakkun_list.tolist()
                                 pakkun_list.append([7,900,800,400,400])
-                                pakkun_list.appned([9,900,700,250,250])
+                                pakkun_list.append([9,900,700,250,250])
                                 flip_info_rfar[k][4]=0
                                 pakkun_list=np.array(pakkun_list)
-                                flip_info_rfar=np.array(flip_info_rfar)
                                 point+=2
                         flip_info_rfar=np.array(([l for l in flip_info_rfar if l[4]!=0]),dtype=np.int)
 
@@ -154,7 +158,6 @@ if __name__=='__main__':
                                 point+=2
                         flip_info_lfar=np.array(([l for l in flip_info_lfar if l[4]!=0]),dtype=np.int)
 
-
                     #flip again
                     #right right
                     if len(flip_info_r)>0 and len(np.where((um_pos_y-50<flip_info_r[:,2]) & (flip_info_r[:,2]<um_pos_y+50))[0])>0:
@@ -163,7 +166,7 @@ if __name__=='__main__':
                             keep=flip_info_r[num_fr[k]]
                             keep=keep.tolist()
                             if um_pos_x-70<=flip_info_r[k][1] and flip_info_r[k][1]<um_pos_x+140:
-                                keep[5]=keep[1]+100
+                                keep[5]=keep[1]+90
                                 flip_info_r[num_fr[k]][4]=0
                                 flip_info_r=np.array(flip_info_r)
                                 flip_info_r=flip_info_r.tolist()
@@ -177,7 +180,7 @@ if __name__=='__main__':
                             keep=flip_info_r[num_fr[k]]
                             keep=keep.tolist()
                             if um_pos_x-280<=flip_info_r[k][1] and flip_info_r[k][1]<um_pos_x-70:
-                                keep[5]=keep[1]-100
+                                keep[5]=keep[1]-90
                                 flip_info_r[num_fr[k]][4]=0
                                 flip_info_l=np.array(flip_info_l)
                                 flip_info_l=flip_info_l.tolist()
@@ -193,7 +196,7 @@ if __name__=='__main__':
                             keep=flip_info_l[num_fl[k]]
                             keep=keep.tolist()
                             if um_pos_x-280<=flip_info_l[k][1] and flip_info_l[k][1]<um_pos_x-70:
-                                keep[5]=keep[1]-100
+                                keep[5]=keep[1]-90
                                 flip_info_l=np.array(flip_info_l)
                                 flip_info_l=flip_info_l.tolist()
                                 flip_info_l[num_fl[k]][4]=0
@@ -207,7 +210,7 @@ if __name__=='__main__':
                             keep=flip_info_l[num_fl[k]]
                             keep=keep.tolist()
                             if um_pos_x-70<=flip_info_l[k][1] and flip_info_l[k][1]<um_pos_x+140:
-                                keep[5]=keep[1]+100
+                                keep[5]=keep[1]+90
                                 flip_info_l[num_fl[k]][4]=0
                                 flip_info_r=np.array(flip_info_r)
                                 flip_info_r=flip_info_r.tolist()
@@ -236,7 +239,7 @@ if __name__=='__main__':
                                     keep[0]=4
                                     flip_rain_info=flip_rain_info.tolist()
                                     flip_rain_info.append(keep)
-                                    flip_rain_info.append([10,keep[1]-55,keep[2]-250,250,250,0])
+                                    flip_rain_info.append([10,max(keep[1]-55,0),max(keep[2]-250,0),250,250,0])
                                     point-=1
                                 else:
                                     flip_info_r=flip_info_r.tolist()
@@ -255,7 +258,7 @@ if __name__=='__main__':
                                     keep[0]=4
                                     flip_rain_info=flip_rain_info.tolist()
                                     flip_rain_info.append(keep)
-                                    flip_rain_info.append([10,keep[1]-55,keep[2]-250,250,250,0])
+                                    flip_rain_info.append([10,max(0,keep[1]-55),max(0,keep[2]-250),250,250,0])
                                     point-=1
                                 else:
                                     flip_info_l=flip_info_l.tolist()
@@ -275,7 +278,7 @@ if __name__=='__main__':
                                     keep[0]=4
                                     flip_rain_info=flip_rain_info.tolist()
                                     flip_rain_info.append(keep)
-                                    flip_rain_info.append([10,keep[1]-55,keep[2]-250,250,250,0])
+                                    flip_rain_info.append([10,max(0,keep[1]-55),max(0,keep[2]-250),250,250,0])
                                     point-=1
                                 else:
                                     flip_info_rfar=flip_info_rfar.tolist()
@@ -294,7 +297,7 @@ if __name__=='__main__':
                                     keep[0]=4
                                     flip_rain_info=flip_rain_info.tolist()
                                     flip_rain_info.append(keep)
-                                    flip_rain_info.append([10,keep[1]-55,keep[2]-250,250,250,0])
+                                    flip_rain_info.append([10,max(keep[1]-55,0),max(0,keep[2]-250),250,250,0])
                                     point-=1
                                 else:
                                     flip_info_lfar=flip_info_lfar.tolist()
