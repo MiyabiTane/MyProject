@@ -7,6 +7,8 @@ import cv2
 import random
 import time as pytime
 
+global flag
+flag=0
 message_arrived=False
 def position_cb(msg):
     global message_arrived
@@ -17,7 +19,7 @@ if __name__=='__main__':
         message_arrived=False
         rospy.init_node('umbrella_pos')
         rospy.Subscriber('/edgetpu_object_detector/output/rects',RectArray,position_cb)
-        while not rospy.is_shutdown():
+        while not rospy.is_shutdown() and flag==0:
             if message_arrived:
                 print("message_arrived")
 
@@ -317,8 +319,10 @@ if __name__=='__main__':
                     if cv2.waitKey(wait_time) >= 0:
                         break
                     j+=1
-                    if j==100:
-                        rospy.is_shutdown()
+                    if j==300:
+                        flag=1
+                        break
+
             message_arrived=False
             rospy.sleep(0.1)
 
