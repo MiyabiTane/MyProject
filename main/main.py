@@ -61,6 +61,7 @@ if __name__=='__main__':
                     if len(message_arrived.rects)>0:
                         x_min=10000
                         umb_index=100
+
                         #for simulation in house
                         for i in range(len(message_arrived.rects)):
                             if message_arrived.rects[i].x<x_min:
@@ -73,7 +74,6 @@ if __name__=='__main__':
                                 umb_index=i
                         #print("rects={}".format(message_arrived.rects[umb_index]))
                         """
-
                         if umb_index!=100:
                             um_pos_x=message_arrived.rects[umb_index].x+message_arrived.rects[umb_index].width/2
                             um_pos_y=message_arrived.rects[umb_index].y+message_arrived.rects[umb_index].height/2
@@ -164,12 +164,12 @@ if __name__=='__main__':
                         num_fr=np.where((um_pos_y-50<flip_info_r[:,2]) & (flip_info_r[:,2]<um_pos_y+50))[0]
                         for k in range(len(num_fr)):
                             keep=flip_info_r[num_fr[k]]
-                            if um_pos_x-70<=flip_info_r[k][1] and flip_info_r[k][1]<um_pos_x+140:
+                            if um_pos_x-70<=keep[1] and keep[1]<um_pos_x+140:
                                 keep[5]=keep[1]+90
-                                flip_info_r[num_fr[k]][4]=0
                                 flip_info_r=np.array(flip_info_r)
                                 flip_info_r=flip_info_r.tolist()
                                 flip_info_r.append(keep)
+                                flip_info_r[num_fr[k]][4]=0
                         flip_info_r=np.array(([l for l in flip_info_r if l[4]!=0]),dtype=np.int)
 
                     #right left
@@ -177,13 +177,13 @@ if __name__=='__main__':
                         num_fr=np.where((um_pos_y-50<flip_info_r[:,2]) & (flip_info_r[:,2]<um_pos_y+50))[0]
                         for k in range(len(num_fr)):
                             keep=flip_info_r[num_fr[k]]
-                            if um_pos_x-280<=flip_info_r[k][1] and flip_info_r[k][1]<um_pos_x-70:
+                            if um_pos_x-280<=keep[1] and keep[1]<um_pos_x-70:
                                 keep[5]=keep[1]-90
-                                flip_info_r[num_fr[k]][4]=0
                                 flip_info_l=np.array(flip_info_l)
                                 flip_info_l=flip_info_l.tolist()
                                 flip_info_l.append(keep)
                                 flip_info_l=np.array(flip_info_l)
+                                flip_info_r[num_fr[k]][4]=0
                         flip_info_r=np.array(([l for l in flip_info_r if l[4]!=0]),dtype=np.int)
 
 
@@ -192,12 +192,12 @@ if __name__=='__main__':
                         num_fl=np.where((um_pos_y-50<flip_info_l[:,2]) & (flip_info_l[:,2]<um_pos_y+50))[0]
                         for k in range(len(num_fl)):
                             keep=flip_info_l[num_fl[k]]
-                            if um_pos_x-280<=flip_info_l[k][1] and flip_info_l[k][1]<um_pos_x-70:
+                            if um_pos_x-280<=keep[1] and keep[1]<um_pos_x-70:
                                 keep[5]=keep[1]-90
                                 flip_info_l=np.array(flip_info_l)
                                 flip_info_l=flip_info_l.tolist()
-                                flip_info_l[num_fl[k]][4]=0
                                 flip_info_l.append(keep)
+                                flip_info_l[num_fl[k]][4]=0
                         flip_info_l=np.array(([l for l in flip_info_l if l[4]!=0]),dtype=np.int)
 
                     #left right
@@ -205,13 +205,13 @@ if __name__=='__main__':
                         num_fl=np.where((um_pos_y-50<flip_info_l[:,2]) & (flip_info_l[:,2]<um_pos_y+50))[0]
                         for k in range(len(num_fl)):
                             keep=flip_info_l[num_fl[k]]
-                            if um_pos_x-70<=flip_info_l[k][1] and flip_info_l[k][1]<um_pos_x+140:
+                            if um_pos_x-70<=keep[1] and keep[1]<um_pos_x+140:
                                 keep[5]=keep[1]+90
-                                flip_info_l[num_fl[k]][4]=0
                                 flip_info_r=np.array(flip_info_r)
                                 flip_info_r=flip_info_r.tolist()
                                 flip_info_r.append(keep)
                                 flip_info_r=np.array(flip_info_r)
+                                flip_info_l[num_fl[k]][4]=0
                         flip_info_l=np.array(([l for l in flip_info_l if l[4]!=0]),dtype=np.int)
 
 
