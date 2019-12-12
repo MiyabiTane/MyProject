@@ -46,7 +46,7 @@ ROSのBoundingBoxArrayを使う。<br>
 ```
 役に立つか不明だけど[ここ](https://www.color-sample.com/colors/397/)にHSL(HSI?)の色見本が載っている。<br>
 
-  * プロジェクターの画像の認識->プロジェクターからの映像とカメラの映像の画角を合わせて比で位置を計算する。<br>
+* プロジェクターの画像の認識->プロジェクターからの映像とカメラの映像の画角を合わせて比で位置を計算する。<br>
 
 \-----pythonでやるなら-----<br>
 [参考になりそうなサイト](https://docs.opencv.org/master/d7/d6f/tutorial_kinect_openni.html)<br>
@@ -113,7 +113,9 @@ strandtest.pyの中身を応用すれば良さそう。<br>
 
 
 ### 振動モーター
-[ここ](https://www.petitmonte.com/robot/howto_vibrating_motor.html)に書いてあるとおりにやれば多分大丈夫。<br>
+回路は[このサイト](https://www.petitmonte.com/robot/howto_vibrating_motor.html)に書いてあるとおりに組む。<br>
+コードについてはwiringpiではGPIOの制御がうまくいかないのでRPi.GPIOを使う。<br>
+<img width="200" src="./for_README/motor.jpg">
 
 ### スピーカー
 Raspberry piのイヤホンジャックに刺せるタイプのものを購入。Raspberry piの音声出力をイヤホンジャックに設定しておく。<br>
