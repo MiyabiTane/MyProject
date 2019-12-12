@@ -17,4 +17,22 @@
 
   </include>
 
+  <include file="$(find jsk_pcl_ros)/launch/hsi_color_filter.launch">
+    <arg name="DEFAULT_NAMESPACE" value="/camera/depth_registered" />
+    <arg name="INPUT" value="points" />
+    <arg name="FILTER_NAME_SUFFIX" default="_blue"/>
+
+
+    <arg name="h_max" default="127" />
+    <arg name="h_min" default="022" />
+    <arg name="s_max" default="255" />
+    <arg name="s_min" default="128" />
+    <arg name="i_max" default="255" />
+    <arg name="i_min" default="128" />
+
+<remap from="/camera/depth_registered/boxes" to="/camera/depth_registered/boxes_blue" />
+
+  </include>
+
+
 </launch>
