@@ -6,6 +6,7 @@ import ame_movie
 import cv2
 import random
 import time as pytime
+import game_result
 
 global flag
 flag=0
@@ -67,9 +68,8 @@ if __name__=='__main__':
                             if message_arrived.rects[i].x<x_min:
                                 umb_index=i
                         """
-                        #umbrella's x is min
+                        #umbrella : 150<width<200 y~=115
                         for i in range(len(message_arrived.rects)):
-                            #umbrella : 150<width<200 y~=115
                             if message_arrived.rects[i].height<150 and message_arrived.rects[i].width<250:
                                 umb_index=i
                         #print("rects={}".format(message_arrived.rects[umb_index]))
@@ -391,13 +391,17 @@ if __name__=='__main__':
                     if cv2.waitKey(wait_time) >= 0:
                         break
                     j+=1
-                    if j==300:
+                    if j==100:
                         flag=1
                         print("your point={}".format(point))
                         break
 
             message_arrived=False
             rospy.sleep(0.1)
+
+
+        rospy.sleep(1)
+        game_result.game_result(point)
 
     except rospy.ROSInterruptException:
         pass
