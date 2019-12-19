@@ -1,6 +1,16 @@
 import ame_movie
 import cv2
 import time
+import pygame
+import threading
+global sound_flag
+
+def play_sound(music,sleep):
+    pygame.mixer.init() #init
+    pygame.mixer.music.load(music) #read
+    pygame.mixer.music.play(1) #do
+    time.sleep(sleep)
+    pygame.mixer.music.stop() #finish
 
 #if point=minus
 def game_result(point):
@@ -26,17 +36,23 @@ def game_result(point):
     cv2.namedWindow('result', cv2.WINDOW_NORMAL)
     cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     #show finish
+    sound_flag=0
     count=0
     while count<10:
         img=ame_movie.ResultPicture('./images/sky.jpg',[[12,250,200,800,800]])
         img=cv2.resize(img,(640,480))
         cv2.imshow("result",img)
+        if sound_flag==0:
+            play_sound('./sounds/finish.mp3',2)
+            sound_flag=1
         if cv2.waitKey(20)>=0:
             break
         count+=1
 
+
+    sound_flag=0
     count=0
-    while count<10:
+    while count<5:
         #wait result
         img=ame_movie.ResultPicture('./images/sky.jpg',[[13,250,200,800,800]])
         img=cv2.resize(img,(640,480))
@@ -44,9 +60,13 @@ def game_result(point):
         if cv2.waitKey(20)>=0:
             break
         count+=1
+        if sound_flag==0:
+            play_sound('./sounds/dram.mp3',3)
+            sound_flag=1
 
-    couont=0
-    while True:
+    sound_flag=0
+    count=0
+    while count<15:
         #show result
         time.sleep(2)
         if original_point>40:
@@ -56,9 +76,14 @@ def game_result(point):
         else:
             img=ame_movie.ResultPicture('./images/sky_rain.jpg',info)
         img = cv2.resize(img, (640,480))
-
         cv2.imshow("result",img)
         if cv2.waitKey(20) >= 0:
             break
+        count+=1
+        if sound_flag==0:
+            play_sound('./sounds/result.mp3',4)
+            sound_flag=1
 
-game_result(120)
+
+#game_result(80)
+#play_sound('./sound/result.mp3',3)
