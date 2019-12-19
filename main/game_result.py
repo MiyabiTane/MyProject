@@ -3,8 +3,8 @@ import cv2
 import time
 import pygame
 import threading
-global sound_flag
 
+#memo 1=flip_rain 2=pakkun 3=flip_high 4=flip_low
 def play_sound(music,sleep):
     pygame.mixer.init() #init
     pygame.mixer.music.load(music) #read
@@ -52,7 +52,7 @@ def game_result(point):
 
     sound_flag=0
     count=0
-    while count<5:
+    while count<20:
         #wait result
         img=ame_movie.ResultPicture('./images/sky.jpg',[[13,250,200,800,800]])
         img=cv2.resize(img,(640,480))
@@ -66,9 +66,8 @@ def game_result(point):
 
     sound_flag=0
     count=0
-    while count<15:
+    while count<25:
         #show result
-        time.sleep(2)
         if original_point>40:
             img=ame_movie.ResultPicture('./images/sky_nizi.jpg',info)
         elif original_point>20:
@@ -85,5 +84,5 @@ def game_result(point):
             sound_flag=1
 
 
-#game_result(80)
+game_result(30)
 #play_sound('./sound/result.mp3',3)
