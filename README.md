@@ -119,4 +119,11 @@ strandtest.pyの中身を応用すれば良さそう。<br>
 
 ### スピーカー
 Raspberry piのイヤホンジャックに刺せるタイプのものを購入。Raspberry piの音声出力をイヤホンジャックに設定しておく。<br>
-<img width="200" src="./for_README/speaker.jpg">
+<img width="200" src="./for_README/speaker.jpg"><br>
+
+[音源の音量を上げるサイト](https://www.mp3louder.com/jp/)や[音源をカットできるサイト](https://mp3cut.net/ja/)があってとても便利。<br>
+無料の音源はこちらを参照↓<br>
+[<効果音ラボ>](https://soundeffect-lab.info/sound/various/)<br>
+[<音人>](https://on-jin.com/sound/hito.php)<br>
+[<ポケットサウンド>](https://pocket-se.info/archives/tag/%E3%81%8B%E3%82%8F%E3%81%84%E3%81%84/page/3/)<br>
+[<ポップモーション>](https://otologic.jp/free/se/motion-pop05.html)<br>
