@@ -17,7 +17,7 @@
 
 **python3 cv2 インストール**<br>
 ```bash
-$ python3 -m pip install opencv-python
+python3 -m pip install opencv-python
 ```
 
 **GIMPでアルファチャンネル画像作成**<br>
@@ -48,7 +48,7 @@ ROSのBoundingBoxArrayを使う。<br>
 
 * プロジェクターの画像の認識->プロジェクターからの映像とカメラの映像の画角を合わせて比で位置を計算する。<br>
 
-\-----pythonでやるなら-----<br>
+* \-----pythonでやるなら-----<br>
 [参考になりそうなサイト](https://docs.opencv.org/master/d7/d6f/tutorial_kinect_openni.html)<br>
 [python](https://gist.github.com/joinAero/1f76844278f141cea8338d1118423648)<br>
 [演習のサイト](http://www.cyber.t.u-tokyo.ac.jp/~narumi/class/mech_enshu/)<br>
@@ -75,6 +75,18 @@ ROSのBoundingBoxArrayを使う。<br>
 ```bash
  rosrun rqt_reconfigure rqt_reconfigure
 ```
+<br>
+
+### OSC通信
+Ubuntu と Rasoberry piのデータのやり取りにはOSC通信を用いる。<br>
+**python3 pythonosc インストール**<br>
+```bash
+pip3 install python-osc
+```
+コードは[公式ページ](https://github.com/attwad/python-osc)から拾ってくる。--ipのdefaultはRaspberry piでifconfigして調べた値にする。wlan0のところのinetの後に続く数字が知りたいIPアドレス。必ず先にserverを立ち上げること。OSC通信ではserverがデータを受け取る側、clientがデータを送る側らしい、不思議...。<br>
+---------通信だけならこれでもおっけー↓-------<br>
+＜設定＞Raspberry pi, Ubuntuそれぞれに[このサイトを参照して](https://qiita.com/nnn112358/items/038abad1546de8057b0e)設定をする。<br>
+ifconfigで受信側のIPアドレスを調べて、サーバー側で`./oscer IPアドレス 10000 /hello`とし、クライアント側で`./oscer receive 10000`とすれば/helloを受け取ることができる。<br>
 
 ### 〜ハード編〜
 **使うもの（予定）**
