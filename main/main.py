@@ -57,12 +57,13 @@ if __name__=='__main__':
                     flip_rain_info=np.array([])
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400]])
                     start_time = pytime.time()
+                    sound_list=[]
 
                     #rects=[info1,info2...]
                     if len(message_arrived.rects)>0:
                         x_min=10000
                         umb_index=100
-
+                        """
                         #for simulation in house
                         for i in range(len(message_arrived.rects)):
                             if message_arrived.rects[i].x<x_min:
@@ -73,7 +74,7 @@ if __name__=='__main__':
                             if message_arrived.rects[i].height<150 and message_arrived.rects[i].width<250:
                                 umb_index=i
                         #print("rects={}".format(message_arrived.rects[umb_index]))
-                        """
+
                         if umb_index!=100:
                             um_pos_x=message_arrived.rects[umb_index].x+message_arrived.rects[umb_index].width/2
                             um_pos_y=message_arrived.rects[umb_index].y+message_arrived.rects[umb_index].height/2
@@ -108,6 +109,7 @@ if __name__=='__main__':
                                 flip_info_r[k][4]=0
                                 pakkun_list=np.array(pakkun_list)
                                 point+=2
+                                sound_list.append(2)
 
                         flip_info_r=np.array(([l for l in flip_info_r if l[4]!=0]),dtype=np.int)
 
@@ -125,6 +127,7 @@ if __name__=='__main__':
                                 flip_info_rfar[k][4]=0
                                 pakkun_list=np.array(pakkun_list)
                                 point+=2
+                                sound_list.append(2)
                         flip_info_rfar=np.array(([l for l in flip_info_rfar if l[4]!=0]),dtype=np.int)
 
 
@@ -141,6 +144,7 @@ if __name__=='__main__':
                                 flip_info_l[k][4]=0
                                 pakkun_list=np.array(pakkun_list)
                                 point+=2
+                                sound_list.append(2)
                         flip_info_l=np.array(([l for l in flip_info_l if l[4]!=0]),dtype=np.int)
 
                     if len(flip_info_lfar)>0 and len(np.where((800<=flip_info_lfar[:,2]) & (flip_info_lfar[:,2]<=1000))[0])>0:
@@ -156,6 +160,7 @@ if __name__=='__main__':
                                 flip_info_lfar[k][4]=0
                                 pakkun_list=np.array(pakkun_list)
                                 point+=2
+                                sound_list.append(2)
                         flip_info_lfar=np.array(([l for l in flip_info_lfar if l[4]!=0]),dtype=np.int)
 
                     #flip again
@@ -170,6 +175,7 @@ if __name__=='__main__':
                                 flip_info_r=flip_info_r.tolist()
                                 flip_info_r.append(keep)
                                 flip_info_r[num_fr[k]][4]=0
+                                sound_list.append(3)
                         flip_info_r=np.array(([l for l in flip_info_r if l[4]!=0]),dtype=np.int)
 
                     #right left
@@ -184,6 +190,7 @@ if __name__=='__main__':
                                 flip_info_l.append(keep)
                                 flip_info_l=np.array(flip_info_l)
                                 flip_info_r[num_fr[k]][4]=0
+                                sound_list.append(3)
                         flip_info_r=np.array(([l for l in flip_info_r if l[4]!=0]),dtype=np.int)
 
 
@@ -198,6 +205,7 @@ if __name__=='__main__':
                                 flip_info_l=flip_info_l.tolist()
                                 flip_info_l.append(keep)
                                 flip_info_l[num_fl[k]][4]=0
+                                sound_list.append(3)
                         flip_info_l=np.array(([l for l in flip_info_l if l[4]!=0]),dtype=np.int)
 
                     #left right
@@ -212,6 +220,7 @@ if __name__=='__main__':
                                 flip_info_r.append(keep)
                                 flip_info_r=np.array(flip_info_r)
                                 flip_info_l[num_fl[k]][4]=0
+                                sound_list.append(3)
                         flip_info_l=np.array(([l for l in flip_info_l if l[4]!=0]),dtype=np.int)
 
 
@@ -238,9 +247,11 @@ if __name__=='__main__':
                                     flip_rain_info.append(keep)
                                     flip_rain_info.append([10,max(keep[1]-20,0),max(keep[2]-180,0),180,180,0])
                                     point-=1
+                                    sound_list.append(1)
                                 else:
                                     flip_info_r=flip_info_r.tolist()
                                     flip_info_r.append(keep)
+                                    sound_list.append(3)
 
                             elif um_pos_x-280<=keep[1] and keep[1]<um_pos_x-70:
                                 #x_centerof parabola
@@ -257,9 +268,11 @@ if __name__=='__main__':
                                     flip_rain_info.append(keep)
                                     flip_rain_info.append([10,max(0,keep[1]-20),max(0,keep[2]-180),180,180,0])
                                     point-=1
+                                    sound_list.append(1)
                                 else:
                                     flip_info_l=flip_info_l.tolist()
                                     flip_info_l.append(keep)
+                                    sound_list.append(3)
 
                             elif um_pos_x+140<=keep[1] and keep[1]<um_pos_x+280:
                                 #x_centerof parabola
@@ -277,9 +290,11 @@ if __name__=='__main__':
                                     flip_rain_info.append(keep)
                                     flip_rain_info.append([10,max(0,keep[1]-20),max(0,keep[2]-180),180,180,0])
                                     point-=1
+                                    sound_list.append(1)
                                 else:
                                     flip_info_rfar=flip_info_rfar.tolist()
                                     flip_info_rfar.append(keep)
+                                    sound_list.append(4)
 
                             elif um_pos_x-420<=keep[1] and keep[1]<um_pos_x-280:
                                 #x_centerof parabola
@@ -296,9 +311,11 @@ if __name__=='__main__':
                                     flip_rain_info.append(keep)
                                     flip_rain_info.append([10,max(keep[1]-20,0),max(0,keep[2]-180),180,180,0])
                                     point-=1
+                                    sound_list.append(1)
                                 else:
                                     flip_info_lfar=flip_info_lfar.tolist()
                                     flip_info_lfar.append(keep)
+                                    sound_list.append(4)
 
                         info=np.array(([l for l in info if l[4]!=0]),dtype=np.int)
                         flip_info_r=np.array((flip_info_r),dtype=np.int)
@@ -391,10 +408,18 @@ if __name__=='__main__':
                     if cv2.waitKey(wait_time) >= 0:
                         break
                     j+=1
-                    if j==100:
+                    if j==200:
                         flag=1
                         print("your point={}".format(point))
                         break
+                    if 3 in sound_list:
+                        game_result.play_sound('./sounds/flip_high.mp3',1)
+                    elif 4 in sound_list:
+                        game_result.play_sound('./sounds/flip_low.mp3',1)
+                    elif 1 in sound_list:
+                        game_result.play_sound('./sounds/flip_rain.mp3',1)
+                    elif 2 in sound_list:
+                        game_result.play_sound('./sounds/paku.mp3',1)
 
             message_arrived=False
             rospy.sleep(0.1)
