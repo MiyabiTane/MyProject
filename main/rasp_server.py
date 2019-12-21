@@ -95,7 +95,16 @@ def OpeningWipe(strip,color1,color2,iteration=100):
             time.sleep(1)
             for i in range(0, strip.numPixels(), 3):
                 strip.setPixelColor(i + q, color2)
+#LED
+# Process arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--clear', action='store_true', help='clear the display on exit')
+args = parser.parse_args()
 
+# Create NeoPixel object with appropriate configuration.
+strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+# Intialize the library (must be called once before other functions).
+strip.begin()
 
 
 def rasp_callback(unused_addr,num):
@@ -126,14 +135,14 @@ def rasp_callback(unused_addr,num):
         print("result")
         rainbowCycle(strip, wait_ms=10, iterations=3)
         disappearWipe(strip)
-                    
+
 
 parser_osc = argparse.ArgumentParser()
 parser_osc.add_argument("--ip",
                     default='127.0.0.1', help="The ip to listen on")
 parser_osc.add_argument("--port",
                     type=int, default=5005, help="The port to listen on")
-args = .parse_args()
+args = parser_osc.parse_args()
 
 dispatcher = dispatcher.Dispatcher()
 dispatcher.map("/filter", rasp_callback)
