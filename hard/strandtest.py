@@ -10,7 +10,7 @@ from rpi_ws281x import PixelStrip, Color
 import argparse
 
 # LED strip configuration:
-LED_COUNT = 16        # Number of LED pixels.
+LED_COUNT = 60        # Number of LED pixels.
 LED_PIN = 18          # GPIO pin connected to the pixels (18 uses PWM!).
 # LED_PIN = 10        # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -23,9 +23,9 @@ LED_CHANNEL = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 # Define functions which animate LEDs in various ways.
 def gradationWipe(strip,color,wait_ms=20):
     """Wipe color across display a pixel at a time."""
-    for i in range(strip.numPixels()/2):
-        strip.setPixelColor(strip.numPixels()/2-i-1, color+256*17*i)
-        strip.setPixelColor(i+strip.numPixels()/2, color+256*17*i)
+    for i in range(strip.numPixels()):
+        strip.setPixelColor(strip.numPixels()//2-i-1, color+256*17*i)
+        strip.setPixelColor(i+strip.numPixels()//2, color+256*17*i)
         #print(color)
         strip.show()
         time.sleep(wait_ms/1000.0)
@@ -92,15 +92,45 @@ def theaterChaseRainbow(strip, wait_ms=50):
             for i in range(0, strip.numPixels(), 3):
                 strip.setPixelColor(i + q, 0)
 
+def lightAll(strip, color,wait):
+    for i in range(0, strip.numPixels()):
+        strip.setPixelColor(i, color)
+        strip.show()
+    time.sleep(wait)
+    
+def disappearRight(strip):
+    for i in range(0, strip.numPixels()):
+        strip.setPixelColor(i,0)
+        strip.show()
+
 def disappearWipe(strip, wait_ms=20):
     """Wipe color across display a pixel at a time."""
-    for i in range(strip.numPixels()/2):
-        strip.setPixelColor(strip.numPixels()/2-i-1, 0)
-        strip.setPixelColor(i+strip.numPixels()/2, 0)
+    for i in range(strip.numPixels()//2):
+        strip.setPixelColor(strip.numPixels()//2-i-1, 0)
+        strip.setPixelColor(i+strip.numPixels()//2, 0)
         #print(color)
         strip.show()
         time.sleep(wait_ms/1000.0)
-
+        
+def gradationWipe(strip,color,wait_ms=20):
+    """Wipe color across display a pixel at a time."""
+    for i in range(strip.numPixels()):
+        strip.setPixelColor(strip.numPixels()//2-i-1, color+256*17*i)
+        strip.setPixelColor(i+strip.numPixels()//2, color+256*17*i)
+        #print(color)
+        strip.show()
+        time.sleep(wait_ms/1000.0)
+        
+def OpeningWipe(strip,color1,color2,iteration=100):
+    for j in range(iteration):
+        for q in range(2):
+            for i in range(0, strip.numPixels(), 3):
+                strip.setPixelColor(i + q, color1)
+            strip.show()
+            time.sleep(1)
+            for i in range(0, strip.numPixels(), 3):
+                strip.setPixelColor(i + q, color2)
+            
 # Main program logic follows:
 if __name__ == '__main__':
     # Process arguments
@@ -118,36 +148,63 @@ if __name__ == '__main__':
         print('Use "-c" argument to clear LEDs on exit')
 
     try:
-
         while True:
-            print('Color wipe animations.')
-            colorWipe(strip, Color(255, 0, 0))  # Red wipe
-            colorWipe(strip, Color(0, 255, 0))  # Blue wipe
-            colorWipe(strip, Color(0, 0, 255))  # Green wipe
+            print("opening")
+            OpeningWipe(strip,Color(255,255,255),Color(255,0,50),iteration=10)
+            disappearRight(strip)
+            print("click")
+            lightAll(strip, Color(55,255,0),1)
+            disappearRight(strip)
+            print("flip_rain")
+            theaterChase(strip, Color(0,50,255), wait_ms=40, iterations=5)
+            disappearRight(strip)
+            print("flip_high") #pink
+            colorWipe(strip,Color(255,45,55), wait_ms=10)
+            disappearRight(strip)
+            print("flip_low") #orange
+            colorWipe(strip,Color(255,50,0), wait_ms=10)
+            disappearRight(strip)
+            print("paku")
+            gradationWipe(strip,Color(150,50,50),wait_ms=20)
+            disappearRight(strip)
+            print("dram")
+            theaterChase(strip, Color(255,255,0), wait_ms=30, iterations=17)
+            lightAll(strip, Color(255,255,0),2)
+            print("result")
+            rainbowCycle(strip, wait_ms=10, iterations=3)
+            disappearWipe(strip)
+            break
+        """
+        while True:
+            print('wheel')
+            wheel(100)
+            #print('Color wipe animations.')
+            #colorWipe(strip, Color(255, 0, 0))  # Red wipe
+            #colorWipe(strip, Color(0, 255, 0))  # Blue wipe
+            #colorWipe(strip, Color(0, 0, 255))  # Green wipe
             print('Theater chase animations.')
             theaterChase(strip, Color(127, 127, 127))  # White theater chase
             theaterChase(strip, Color(127, 0, 0))  # Red theater chase
             theaterChase(strip, Color(0, 0, 127))  # Blue theater chase
-            print('rainbow.')
-            rainbow(strip)
-            print('rainbowCycle')
-            rainbowCycle(strip)
-            print('thraterChaseRainbow')
-            theaterChaseRainbow(strip)
-            print("gradationWipe")
+            #print('rainbow.')
+            #rainbow(strip)
+            #print('rainbowCycle')
+            #rainbowCycle(strip)
+            #print('thraterChaseRainbow')
+            #theaterChaseRainbow(strip)
+            print("gradationWipe red")
             gradationWipe(strip,Color(255, 0, 0))
+            time.sleep(1)
+            print("gradationwipe green")
             gradationWipe(strip,Color(0, 255, 0))
+            time.sleep(1)
+            print("gradationwipe blue")
+            time.sleep(1)
             gradationWipe(strip,Color(0, 0, 255))
-            print('wheel')
-            wheel(100)
-            print('colorWipe')
-            colorWipe(strip,Color(255,0,0))
-            colorWipe(strip,Color(0,255,0))
-            colorWipe(strip,Color(0,0,255))
-            peint('disappearWipe')
+            print('disappearWipe')
             disappearWipe(strip)
             break
-
+        """
     except KeyboardInterrupt:
         if args.clear:
             colorWipe(strip, Color(0, 0, 0), 10)
