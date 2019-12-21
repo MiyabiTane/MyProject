@@ -118,9 +118,19 @@ ROSをいれるにはRaspberry pi上のターミナルで[このページ](http:
 
 ### フルカラーシリアルLEDテープ<br>
 [このページに載っているGitHubのコードをダウンロード！](http://jellyware.jp/kurage/raspi/led_stick.html)<br>
-ロジック変換しないでもいけてしまった...。<br>
+ロジック変換しないでも光らせることはできるが、安全のためロジック変換ICを用いることにした。<br>
 上記サイトの"回路結線図"以降を参照。
 strandtest.pyの中身を応用すれば良さそう。<br>
+
+**＜python3でLEDテープを動かすには＞**<br>
+上記のコードはsudo pythonで実行する必要があり、osc通信はpython3で実行するため共存できない。python3で動かしたい場合は次のようにする。<br>
+```bash
+sudo pip3 install rpi_ws281x
+git clone　https://github.com/rpi-ws281x/rpi-ws281x-python
+cd rpi-ws281x-python/example
+chmod 755 *.py
+sudo python3 strandtest.py
+```
 <img width="200" src="./for_README/led_rainbow.jpg">
 
 
