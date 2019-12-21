@@ -40,6 +40,16 @@ def colorWipe(strip, color, wait_ms=50):
         strip.show()
         time.sleep(wait_ms / 1000.0)
 
+def wheel(pos):
+    """Generate rainbow colors across 0-255 positions."""
+    if pos < 85:
+        return Color(pos * 3, 255 - pos * 3, 0)
+    elif pos < 170:
+        pos -= 85
+        return Color(255 - pos * 3, 0, pos * 3)
+    else:
+        pos -= 170
+        return Color(0, pos * 3, 255 - pos * 3)
 
 def theaterChase(strip, color, wait_ms=50, iterations=10):
     """Movie theater light style chaser animation."""
@@ -129,7 +139,7 @@ def rasp_callback(unused_addr,num):
         disappearRight(strip)
     if num==5:
         print("dram")
-        theaterChase(strip, Color(255,255,0), wait_ms=30, iterations=17)
+        theaterChase(strip, Color(255,255,0), wait_ms=30, iterations=20)
         lightAll(strip, Color(255,255,0),2)
     if num==6:
         print("result")
@@ -139,9 +149,9 @@ def rasp_callback(unused_addr,num):
 
 parser_osc = argparse.ArgumentParser()
 parser_osc.add_argument("--ip",
-                    default='127.0.0.1', help="The ip to listen on")
+                    default='192.168.3.11', help="The ip to listen on")
 parser_osc.add_argument("--port",
-                    type=int, default=5005, help="The port to listen on")
+                    type=int, default=5045, help="The port to listen on")
 args = parser_osc.parse_args()
 
 dispatcher = dispatcher.Dispatcher()
