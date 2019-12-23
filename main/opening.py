@@ -9,7 +9,6 @@ from pythonosc import udp_client
 import play_sound
 import threading
 
-"""
 parser = argparse.ArgumentParser()
 #please change IP
 parser.add_argument("--ip", default='127.0.0.1',
@@ -19,22 +18,17 @@ parser.add_argument("--port", type=int, default=5005,
 args = parser.parse_args()
 
 client = udp_client.SimpleUDPClient(args.ip, args.port)
-"""
+
 def sound_control():
-    play_sound.play_sound('./sounds/opening.mp3',10)
+    play_sound.play_sound('./sounds/opening.mp3',15)
     #client.send_message("/filter", 9)
 
-def opening():
+def image_control():
     cv2.namedWindow('result', cv2.WINDOW_NORMAL)
     cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     count=0
     sound_flag=0
     while count<7:
-        #opening sound
-        if sound_flag==0:
-            thread=threading.Thread(target=sound_control)
-            thread.start()
-            sound_flag=1
 
         print("count={}".format(count))
         if count==0:
@@ -82,5 +76,13 @@ def opening():
         if cv2.waitKey(1000) >= 0:
             break
         count+=1
+
+def opening():
+    thread1=threading.Thread(target=sound_control)
+    thread2=threading.Thread(target=image_control)
+    thread1.start()
+    thread2.start()
+    thread1.join()
+    thread2.join()
 
 opening()
