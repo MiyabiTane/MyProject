@@ -10,12 +10,13 @@ import game_result
 import argparse
 from pythonosc import osc_message_builder
 from pythonosc import udp_client
+import play_sound
 
 #OSC communication
 parser = argparse.ArgumentParser()
-parser.add_argument("--ip", default='127.0.0.1',
+parser.add_argument("--ip", default='192.168.3.11',
                     help="The ip of the OSC server")
-parser.add_argument("--port", type=int, default=5005,
+parser.add_argument("--port", type=int, default=5045,
                     help="The port the OSC server is listening on")
 args = parser.parse_args()
 client = udp_client.SimpleUDPClient(args.ip, args.port)
@@ -28,6 +29,23 @@ def position_cb(msg):
     message_arrived=msg
 
 try:
+    #full screen
+    cv2.namedWindow('result', cv2.WINDOW_NORMAL)
+    cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    #show start
+    sound_flag=0
+    count=0
+    while count<10:
+        img=ame_movie.Some2OnePicture('./images/sky.jpg',[[3,250,200,800,800]])
+        img=cv2.resize(img,(640,480))
+        cv2.imshow("result",img)
+        if sound_flag==0:
+            play_sound.play_sound('./sounds/start.mp3',2)
+            sound_flag=1
+        if cv2.waitKey(20)>=0:
+            break
+        count+=1
+
     message_arrived=False
     rospy.init_node('umbrella_pos')
     rospy.Subscriber('/edgetpu_object_detector/output/rects',RectArray,position_cb)
@@ -38,11 +56,13 @@ try:
             cv2.namedWindow('result', cv2.WINDOW_NORMAL)
             cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
             #make ame
-            time=np.random.randint(0,250,20)
+            time=np.random.randint(0,200,20)
             x_left=np.random.randint(340,820,len(time))
             #x_left=[500]*len(time)
             #pitch candy:rain
-            images=np.random.randint(0,3,len(time))
+            images_rain=[0]*7
+            images_candy=[1]*(len(time)-7)
+            images=np.concatenate([images_rain,images_candy],0)
             size=np.zeros((len(time),2))
             size[np.where(images==0)]=[140,140]
             size[np.where(images!=0)]=[140,140]
@@ -51,8 +71,6 @@ try:
             for i in range(len(time)):
                 fall_obs.append([images[i],x_left[i],0,size[i][0],size[i][1]])
 
-            um_pos_x=6000
-            um_pos_y=6000
             fps = 25
             j=0
             point=0
@@ -71,6 +89,8 @@ try:
                 sound_list=[]
 
                 #rects=[info1,info2...]
+                um_pos_x=6000
+                um_pos_y=6000
                 if len(message_arrived.rects)>0:
                     x_min=10000
                     umb_index=100
@@ -425,16 +445,16 @@ try:
                     break
                 if 3 in sound_list:
                     client.send_message("/filter", 3)
-                    game_result.play_sound('./sounds/flip_high.mp3',1)
+                    play_sound.play_sound('./sounds/flip_high.mp3',1)
                 if 4 in sound_list:
                     client.send_message("/filter", 4)
-                    game_result.play_sound('./sounds/flip_low.mp3',1)
+                    play_sound.play_sound('./sounds/flip_low.mp3',1)
                 if 1 in sound_list:
                     client.send_message("/filter", 1)
-                    game_result.play_sound('./sounds/flip_rain.mp3',1)
+                    play_sound.play_sound('./sounds/flip_rain.mp3',1)
                 if 2 in sound_list:
                     client.send_message("/filter", 2)
-                    game_result.play_sound('./sounds/paku.mp3',1)
+                    play_sound.play_sound('./sounds/paku.mp3',1)
 
         message_arrived=False
         rospy.sleep(0.1)
