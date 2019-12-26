@@ -390,8 +390,6 @@ try:
                         keep=np.array(keep)
                         keep=keep.tolist()
                         if um_pos_x-70<=keep[1] and keep[1]<um_pos_x+140 and keep[0]!=2:
-                        #x_center of parabola
-                            keep.append(keep[1]+90)
                             #remove ame from info
                             info[num_f[m]][4]=0
                             #add candy to flip_info
@@ -402,14 +400,14 @@ try:
                                 keep[0]=4
                                 flip_rain_info=flip_rain_info.tolist()
                                 flip_rain_info.append(keep)
-                                flip_rain_info.append([10,max(keep[1]-20,0),max(keep[2]-180,0),180,180,0])
+                                flip_rain_info.append([10,max(keep[1]-20,0),max(keep[2]-180,0),180,180])
                                 point-=1
                                 sound_list.append(1)
                             elif keep[0]==25:
                                 keep[0]=4
                                 flip_rain_info=flip_rain_info.tolist()
                                 flip_rain_info.append(keep)
-                                flip_rain_info.append([34,max(keep[1]-20,0),max(keep[2]-180,0),180,180,0])
+                                flip_rain_info.append([34,max(keep[1]-20,0),max(keep[2]-180,0),180,180])
                                 point-=2
                                 sound_list.append(1)
                             elif 14<=keep[0] and keep[0]<=18:
@@ -419,13 +417,13 @@ try:
                                 pakkun_list=np.array(pakkun_list)
                                 sound_list.append(5)
                             else:
+                                #x_center of parabola
+                                keep.append(keep[1]+90)
                                 flip_info_r=flip_info_r.tolist()
                                 flip_info_r.append(keep)
                                 sound_list.append(3)
 
                         elif um_pos_x-280<=keep[1] and keep[1]<um_pos_x-70 and keep[0]!=2:
-                            #x_centerof parabola
-                            keep.append(keep[1]-90)
                             #remove ame from info
                             info[num_f[m]][4]=0
                             #add candy to flip info
@@ -436,14 +434,14 @@ try:
                                 keep[0]=4
                                 flip_rain_info=flip_rain_info.tolist()
                                 flip_rain_info.append(keep)
-                                flip_rain_info.append([10,max(0,keep[1]-20),max(0,keep[2]-180),180,180,0])
+                                flip_rain_info.append([10,max(0,keep[1]-20),max(0,keep[2]-180),180,180])
                                 point-=1
                                 sound_list.append(1)
                             elif keep[0]==25:
                                 keep[0]=4
                                 flip_rain_info=flip_rain_info.tolist()
                                 flip_rain_info.append(keep)
-                                flip_rain_info.append([34,max(keep[1]-20,0),max(keep[2]-180,0),180,180,0])
+                                flip_rain_info.append([34,max(keep[1]-20,0),max(keep[2]-180,0),180,180])
                                 point-=2
                                 sound_list.append(1)
                             elif 14<=keep[0] and keep[0]<=18:
@@ -453,13 +451,13 @@ try:
                                 pakkun_list=np.array(pakkun_list)
                                 sound_list.append(5)
                             else:
+                                #x_centerof parabola
+                                keep.append(keep[1]-90)
                                 flip_info_l=flip_info_l.tolist()
                                 flip_info_l.append(keep)
                                 sound_list.append(3)
 
                         elif um_pos_x+140<=keep[1] and keep[1]<um_pos_x+280 and keep[0]!=2 and keep[0]!=25:
-                            #x_centerof parabola
-                            keep.append(keep[1]+110)
                             #remove
                             info[num_f[m]][4]=0
                             #to avoid error list.tolist()
@@ -471,7 +469,7 @@ try:
                                 keep[0]=4
                                 flip_rain_info=flip_rain_info.tolist()
                                 flip_rain_info.append(keep)
-                                flip_rain_info.append([10,max(0,keep[1]-20),max(0,keep[2]-180),180,180,0])
+                                flip_rain_info.append([10,max(0,keep[1]-20),max(0,keep[2]-180),180,180])
                                 point-=1
                                 sound_list.append(1)
                             elif 14<=keep[0] and keep[0]<=18:
@@ -481,13 +479,13 @@ try:
                                 pakkun_list=np.array(pakkun_list)
                                 sound_list.append(5)
                             else:
+                                #x_centerof parabola
+                                keep.append(keep[1]+110)
                                 flip_info_rfar=flip_info_rfar.tolist()
                                 flip_info_rfar.append(keep)
                                 sound_list.append(4)
 
                         elif um_pos_x-420<=keep[1] and keep[1]<um_pos_x-280 and keep[0]!=2 and keep[0]!=25:
-                            #x_centerof parabola
-                            keep.append(keep[1]-110)
                             #remove
                             info[num_f[m]][4]=0
                             #add candy to flip info
@@ -498,7 +496,7 @@ try:
                                 keep[0]=4
                                 flip_rain_info=flip_rain_info.tolist()
                                 flip_rain_info.append(keep)
-                                flip_rain_info.append([10,max(keep[1]-20,0),max(0,keep[2]-180),180,180,0])
+                                flip_rain_info.append([10,max(keep[1]-20,0),max(0,keep[2]-180),180,180])
                                 point-=1
                                 sound_list.append(1)
                             elif 14<=keep[0] and keep[0]<=18:
@@ -508,13 +506,15 @@ try:
                                 pakkun_list=np.array(pakkun_list)
                                 sound_list.append(5)
                             else:
+                                #x_centerof parabola
+                                keep.append(keep[1]-110)
                                 flip_info_lfar=flip_info_lfar.tolist()
                                 flip_info_lfar.append(keep)
                                 sound_list.append(4)
 
                         #small candy
                         if um_pos_x-50<=keep[1] and keep[1]<um_pos_x+120 and keep[0]==2:
-                        #x_center of parabola
+                            #x_center of parabola
                             keep.append(keep[1]+90)
                             #remove ame from info
                             info[num_f[m]][4]=0
@@ -537,7 +537,7 @@ try:
                             flip_info_l_s.append(keep)
                             sound_list.append(3)
 
-                        elif um_pos_x+120<=keep[1] and keep[1]<um_pos_x+260 and keep[0]!=2:
+                        elif um_pos_x+120<=keep[1] and keep[1]<um_pos_x+260 and keep[0]==2:
                             #x_centerof parabola
                             keep.append(keep[1]+110)
                             #remove
@@ -561,8 +561,8 @@ try:
                             flip_info_lfar_s=flip_info_lfar_s.tolist()
                             flip_info_lfar_s.append(keep)
                             sound_list.append(4)
-
-
+                    #for debug
+                    print("flip_rain_info={}".format(flip_rain_info))
                     info=np.array(([l for l in info if l[4]!=0]),dtype=np.int)
                     flip_info_r=np.array((flip_info_r),dtype=np.int)
                     flip_info_l=np.array((flip_info_l),dtype=np.int)
@@ -587,7 +587,7 @@ try:
                     flip_info_r[:,1]+=np.array([10]*len(flip_info_r),dtype=np.int)
                     #make parabola
                     num_3=np.where(flip_info_r[:,1]<flip_info_r[:,5])
-                    flip_info_r[num_3,2]-=np.array([20]*len(num_3[0]),dtype=np.int)
+                    flip_info_r[num_3,2]-=np.array([15]*len(num_3[0]),dtype=np.int)
                     num_4=np.where(flip_info_r[:,1]>flip_info_r[:,5])
                     flip_info_r[num_4,2]+=np.array([10]*len(num_4[0]),dtype=np.int)
                     #flip_info[:,2]=parabola(a=0.5,x_left=flip_info[:,1],y_up=flip_info[:,2],x_cen=flip_info[:,5],y_plus=10)
@@ -606,7 +606,7 @@ try:
                     flip_info_l[:,1]-=np.array([10]*len(flip_info_l),dtype=np.int)
                     #make parabola
                     num_5=np.where(flip_info_l[:,1]>flip_info_l[:,5])
-                    flip_info_l[num_5,2]-=np.array([20]*len(num_5[0]),dtype=np.int)
+                    flip_info_l[num_5,2]-=np.array([15]*len(num_5[0]),dtype=np.int)
                     num_6=np.where(flip_info_l[:,1]<flip_info_l[:,5])
                     flip_info_l[num_6,2]+=np.array([10]*len(num_6[0]),dtype=np.int)
                 flip_info_l=np.array([l for l in flip_info_l if (0<l[1] and 0<l[2] and l[2]<1100)])
@@ -653,7 +653,7 @@ try:
                     flip_info_r_s[:,1]+=np.array([15]*len(flip_info_r_s),dtype=np.int)
                     #make parabola
                     num_3=np.where(flip_info_r_s[:,1]<flip_info_r_s[:,5])
-                    flip_info_r_s[num_3,2]-=np.array([20]*len(num_3[0]),dtype=np.int)
+                    flip_info_r_s[num_3,2]-=np.array([15]*len(num_3[0]),dtype=np.int)
                     num_4=np.where(flip_info_r_s[:,1]>flip_info_r_s[:,5])
                     flip_info_r_s[num_4,2]+=np.array([10]*len(num_4[0]),dtype=np.int)
                     #flip_info[:,2]=parabola(a=0.5,x_left=flip_info[:,1],y_up=flip_info[:,2],x_cen=flip_info[:,5],y_plus=10)
@@ -664,7 +664,7 @@ try:
                     flip_info_l_s[:,1]-=np.array([15]*len(flip_info_l_s),dtype=np.int)
                     #make parabola
                     num_5=np.where(flip_info_l_s[:,1]>flip_info_l_s[:,5])
-                    flip_info_l_s[num_5,2]-=np.array([20]*len(num_5[0]),dtype=np.int)
+                    flip_info_l_s[num_5,2]-=np.array([15]*len(num_5[0]),dtype=np.int)
                     num_6=np.where(flip_info_l_s[:,1]<flip_info_l_s[:,5])
                     flip_info_l_s[num_6,2]+=np.array([10]*len(num_6[0]),dtype=np.int)
                 flip_info_l_s=np.array([l for l in flip_info_l_s if (0<l[1] and 0<l[2] and l[2]<1100)])
