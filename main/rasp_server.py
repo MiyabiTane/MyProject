@@ -139,13 +139,23 @@ def rasp_callback(unused_addr,num):
         disappearRight(strip)
     if num==5:
         print("dram")
-        theaterChase(strip, Color(255,255,0), wait_ms=30, iterations=20)
+        theaterChase(strip, Color(255,255,0), wait_ms=30, iterations=23)
         lightAll(strip, Color(255,255,0),2)
     if num==6:
         print("result")
         rainbowCycle(strip, wait_ms=10, iterations=3)
         disappearWipe(strip)
-
+    if num==9:
+        print("opening")
+        OpeningWipe(strip,Color(255,255,255),Color(255,0,50),iteration=10)
+    if num==10:
+        print("click")
+        lightAll(strip, Color(55,255,0),1)
+        disappearRight(strip)
+    if num==11:
+        print("gottsun!")
+        theaterChase(strip, Color(255,255,255), wait_ms=40, iterations=5)
+        disappearRight(strip)
 
 parser_osc = argparse.ArgumentParser()
 parser_osc.add_argument("--ip",
