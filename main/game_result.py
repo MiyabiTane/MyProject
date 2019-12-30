@@ -1,4 +1,5 @@
 import ame_movie
+import play_sound
 import cv2
 import time
 import pygame
@@ -7,22 +8,14 @@ from pythonosc import osc_message_builder
 from pythonosc import udp_client
 
 parser = argparse.ArgumentParser()
-#please change IP 
-parser.add_argument("--ip", default='127.0.0.1',
+#please change IP
+parser.add_argument("--ip", default='192.168.3.11',
                     help="The ip of the OSC server")
-parser.add_argument("--port", type=int, default=5005,
+parser.add_argument("--port", type=int, default=5075,
                     help="The port the OSC server is listening on")
 args = parser.parse_args()
 
 client = udp_client.SimpleUDPClient(args.ip, args.port)
-
-#memo 1=flip_rain 2=pakkun 3=flip_high 4=flip_low
-def play_sound(music,sleep):
-    pygame.mixer.init() #init
-    pygame.mixer.music.load(music) #read
-    pygame.mixer.music.play(1) #do
-    time.sleep(sleep)
-    pygame.mixer.music.stop() #finish
 
 #if point=minus
 def game_result(point):
@@ -55,7 +48,7 @@ def game_result(point):
         img=cv2.resize(img,(640,480))
         cv2.imshow("result",img)
         if sound_flag==0:
-            play_sound('./sounds/finish.mp3',2)
+            play_sound.play_sound('./sounds/finish.mp3',2)
             sound_flag=1
         if cv2.waitKey(20)>=0:
             break
@@ -74,7 +67,7 @@ def game_result(point):
         count+=1
         if sound_flag==0:
             client.send_message("/filter", 5)
-            play_sound('./sounds/dram.mp3',3)
+            play_sound.play_sound('./sounds/dram.mp3',3)
             sound_flag=1
 
     sound_flag=0
@@ -82,10 +75,10 @@ def game_result(point):
     stop_flag=0
     while count<25:
         #show result
-        if original_point>40:
+        if original_point>10:
             img=ame_movie.ResultPicture('./images/sky_nizi.jpg',info)
             sound_flag=1
-        elif original_point>20:
+        elif original_point>3:
             img=ame_movie.ResultPicture('./images/sky_cloud.jpg',info)
             sound_flag=2
         else:
@@ -98,17 +91,15 @@ def game_result(point):
         count+=1
         if sound_flag==1 and stop_flag==0:
             client.send_message("/filter", 6)
-            play_sound('./sounds/result_rainbow.mp3',4)
+            play_sound.play_sound('./sounds/result_rainbow.mp3',4)
             stop_flag=1
         elif sound_flag==2 and stop_flag==0:
-            client.send_message("/filter", 7)
-            play_sound('./sounds/result_cloud.mp3',4)
+            client.send_message("/filter", 6)
+            play_sound.play_sound('./sounds/result_cloud.mp3',4)
             stop_flag=1
         elif sound_flag==3 and stop_flag==0:
-            client.send_message("/filter", 8)
-            play_sound('./sounds/result_rain.mp3',5)
+            client.send_message("/filter", 6)
+            play_sound.play_sound('./sounds/result_rain.mp3',5)
             stop_flag=1
 
-
-#game_result(-30)
-#play_sound('./sounds/opening.mp3',5)
+#game_result(15)

@@ -17,6 +17,10 @@ def Some2OnePicture(base_img,info):
     for i in range(len(info)):
         if info[i][0]==0:
             alpha_image='./images/rain.png'
+        elif info[i][0]==1:
+            alpha_image='./images/candy.png'
+        elif info[i][0]==2:
+            alpha_image='./images/candy_small.png'
         elif info[i][0]==3:
             alpha_image='./images/start.png'
         elif info[i][0]==4:
@@ -33,8 +37,56 @@ def Some2OnePicture(base_img,info):
             alpha_image='./images/plus_2.png'
         elif info[i][0]==10:
             alpha_image='./images/minus_1.png'
-        else:
-            alpha_image='./images/candy.png'
+        elif info[i][0]==11:
+            alpha_image='./images/pero_4.png'
+        elif info[i][0]==12:
+            alpha_image='./images/pero_5.png'
+        elif info[i][0]==13:
+            alpha_image='./images/pero_6.png'
+        elif info[i][0]==14:
+            alpha_image='./images/pero_7.png'
+        elif info[i][0]==15:
+            alpha_image='./images/pero_8.png'
+        elif info[i][0]==16:
+            alpha_image='./images/pero_1.png'
+        elif info[i][0]==17:
+            alpha_image='./images/pero_2.png'
+        elif info[i][0]==18:
+            alpha_image='./images/pero_3.png'
+        elif info[i][0]==19:
+            alpha_image='./images/plus_4.png'
+        elif info[i][0]==20:
+            alpha_image='./images/plus_10.png'
+        elif info[i][0]==21:
+            alpha_image='./images/gotsu_right.png'
+        elif info[i][0]==22:
+            alpha_image='./images/gotsu_left.png'
+        elif info[i][0]==23:
+            alpha_image='./images/sun_1.png'
+        elif info[i][0]==24:
+            alpha_image='./images/sun_2.png'
+        elif info[i][0]==25:
+            alpha_image='./images/rain_small.png'
+        elif info[i][0]==26:
+            alpha_image='./images/cloud1.png'
+        elif info[i][0]==27:
+            alpha_image='./images/cloud2.png'
+        elif info[i][0]==28:
+            alpha_image='./images/cloud3.png'
+        elif info[i][0]==29:
+            alpha_image='./images/cloud4.png'
+        elif info[i][0]==30:
+            alpha_image='./images/cloud5.png'
+        elif info[i][0]==31:
+            alpha_image='./images/cloud6.png'
+        elif info[i][0]==32:
+            alpha_image='./images/cloud7.png'
+        elif info[i][0]==33:
+            alpha_image='./images/cloud8.png'
+        elif info[i][0]==34:
+            alpha_image='./images/minus_2.png'
+
+
         src[i]=cv2.imread(alpha_image,-1)
         src[i]=cv2.resize(src[i],dsize=(int(info[i][3]),int(info[i][4])))
         width[i], height[i] = src[i].shape[:2]
@@ -181,6 +233,12 @@ def RulePicture(base_img,info):
             alpha_image='./images/arrow.png'
         elif info[i][0]==10:
             alpha_image='./images/exp_flip_rain.png'
+        elif info[i][0]==11:
+            alpha_image='./images/exp_point_get.png'
+        elif info[i][0]==12:
+            alpha_image='./images/piko_left.png'
+        elif info[i][0]==13:
+            alpha_image='./images/piko_right.png'
 
         src[i]=cv2.imread(alpha_image,-1)
         src[i]=cv2.resize(src[i],dsize=(int(info[i][3]),int(info[i][4])))

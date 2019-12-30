@@ -161,7 +161,7 @@ parser_osc = argparse.ArgumentParser()
 parser_osc.add_argument("--ip",
                     default='192.168.3.11', help="The ip to listen on")
 parser_osc.add_argument("--port",
-                    type=int, default=5045, help="The port to listen on")
+                    type=int, default=5075, help="The port to listen on")
 args = parser_osc.parse_args()
 
 dispatcher = dispatcher.Dispatcher()

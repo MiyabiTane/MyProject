@@ -11,12 +11,13 @@ import argparse
 from pythonosc import osc_message_builder
 from pythonosc import udp_client
 import play_sound
+import threading
 
 #OSC communication
 parser = argparse.ArgumentParser()
-parser.add_argument("--ip", default='127.0.0.1',
+parser.add_argument("--ip", default='192.168.3.11',
                     help="The ip of the OSC server")
-parser.add_argument("--port", type=int, default=5005,
+parser.add_argument("--port", type=int, default=5075,
                     help="The port the OSC server is listening on")
 args = parser.parse_args()
 client = udp_client.SimpleUDPClient(args.ip, args.port)
@@ -27,6 +28,11 @@ message_arrived=False
 def position_cb(msg):
     global message_arrived
     message_arrived=msg
+
+def sound_thunder():
+    play_sound.play_sound('./sounds/thunder.mp3',15)
+def sound_kirarin():
+    play_sound.play_sound('./sounds/kirarin.mp3',6)
 
 try:
     #full screen
@@ -56,22 +62,22 @@ try:
             cv2.namedWindow('result', cv2.WINDOW_NORMAL)
             cv2.setWindowProperty('result', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
             #make ame
-            time_1=np.random.randint(0,180,20) #stage1
-            time_2=np.random.randint(205,380,20) #stage2
-            time_3=np.random.randint(400,580,25) #stage3
+            time_1=np.random.randint(0,90,11) #stage1
+            time_2=np.random.randint(110,210,15) #stage2
+            time_3=np.random.randint(220,310,15) #stage3
             time=np.concatenate([time_1,time_2,time_3],0)
             x_left=np.random.randint(270,820,len(time))
             #stage1
-            images_rain=[0]*7
-            images_candy=[1]*13
+            images_rain=[0]*4
+            images_candy=[1]*7
             #stage2
             images_rain_small=[25]*8
-            images_rain_2=[0]*5
-            images_candy_2=[1]*7
+            images_rain_2=[0]*3
+            images_candy_2=[1]*4
             #stage3
-            images_candy_small=[2]*10
+            images_candy_small=[2]*7
             images_pero=[16]*5
-            images_candy_3=[1]*10
+            images_candy_3=[1]*3
 
             images=np.concatenate([images_rain,images_candy,images_rain_small,images_rain_2,images_candy_2,images_candy_small,images_pero,images_candy_3],0)
             size=np.zeros((len(time),2))
@@ -102,32 +108,35 @@ try:
 
             while True:
                 print("j={}".format(j))
-                if j==200:
-                    play_sound.play_sound('./sounds/thunder.mp3',4)
-                if j==400:
-                    play_sound.play_sound('./sounds/kirarin.mp3',3)
+                if j==100:
+                    thread1=threading.Thread(target=sound_thunder)
+                    thread1.start()
 
-                if 400<=j and j<=600:
+                if j==220:
+                    thread2=threading.Thread(target=sound_kirarin)
+                    thread2.start()
+
+                if 220<=j and j<=320:
                     if j%4==0 or j%4==1:
                         pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[23,0,0,450,450]])
                     else:
                         pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[24,0,0,450,450]])
 
-                elif j==200 or j==399:
+                elif j==100 or j==219:
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[26,0,0,1300,1300]])
-                elif j==201 or j==398:
+                elif j==101 or j==218:
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[27,0,0,1300,1300]])
-                elif j==202 or j==397:
+                elif j==102 or j==217:
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[28,0,0,1300,1300]])
-                elif j==203 or j==396:
+                elif j==103 or j==216:
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[29,0,0,1300,1300]])
-                elif j==204 or j==395:
+                elif j==104 or j==215:
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[30,0,0,1300,1300]])
-                elif j==205 or j==394:
+                elif j==105 or j==214:
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[31,0,0,1300,1300]])
-                elif j==206 or j==393:
+                elif j==106 or j==213:
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[32,0,0,1300,1300]])
-                elif 207<=j and j<=392:
+                elif 107<=j and j<=212:
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400],[33,0,0,1300,1300]])
                 else:
                     pakkun_list=np.array([[5,900,800,400,400],[6,0,800,400,400]])
@@ -144,7 +153,7 @@ try:
                     umb_index=100
                     #umbrella : 150<width<200 y~=115
                     for i in range(len(message_arrived.rects)):
-                        if message_arrived.rects[i].height<150 and message_arrived.rects[i].width<250:
+                        if message_arrived.rects[i].height<150 and 100<message_arrived.rects[i].width and message_arrived.rects[i].width<250:
                             umb_index=i
                     #print("rects={}".format(message_arrived.rects[umb_index]))
 
@@ -169,8 +178,8 @@ try:
                     info=np.array(info)
 
                 #pakkun goal
-                if len(flip_info_r)>0 and len(np.where((800<=flip_info_r[:,2]) & (flip_info_r[:,2]<=1000))[0])>0:
-                    num_g=np.where((800<=flip_info_r[:,2]) & (flip_info_r[:,2]<=1000))[0]
+                if len(flip_info_r)>0 and len(np.where((750<=flip_info_r[:,2]) & (flip_info_r[:,2]<=950))[0])>0:
+                    num_g=np.where((750<=flip_info_r[:,2]) & (flip_info_r[:,2]<=950))[0]
                     for k in num_g:
                         keep=flip_info_r[k]
                         keep=keep.tolist()
@@ -191,8 +200,8 @@ try:
                     flip_info_r=np.array(([l for l in flip_info_r if l[4]!=0]),dtype=np.int)
 
 
-                if len(flip_info_rfar)>0 and len(np.where((800<=flip_info_rfar[:,2]) & (flip_info_rfar[:,2]<=1000))[0])>0:
-                    num_g=np.where((800<=flip_info_rfar[:,2]) & (flip_info_rfar[:,2]<=1000))[0]
+                if len(flip_info_rfar)>0 and len(np.where((750<=flip_info_rfar[:,2]) & (flip_info_rfar[:,2]<=950))[0])>0:
+                    num_g=np.where((750<=flip_info_rfar[:,2]) & (flip_info_rfar[:,2]<=950))[0]
                     for k in num_g:
                         keep=flip_info_rfar[k]
                         keep=keep.tolist()
@@ -212,8 +221,8 @@ try:
                     flip_info_rfar=np.array(([l for l in flip_info_rfar if l[4]!=0]),dtype=np.int)
 
 
-                if len(flip_info_l)>0 and len(np.where((800<=flip_info_l[:,2]) & (flip_info_l[:,2]<=1000))[0])>0:
-                    num_g=np.where((800<=flip_info_l[:,2]) & (flip_info_l[:,2]<=1000))[0]
+                if len(flip_info_l)>0 and len(np.where((750<=flip_info_l[:,2]) & (flip_info_l[:,2]<=950))[0])>0:
+                    num_g=np.where((750<=flip_info_l[:,2]) & (flip_info_l[:,2]<=950))[0]
                     for k in num_g:
                         keep=flip_info_l[k]
                         keep=keep.tolist()
@@ -232,8 +241,8 @@ try:
                             sound_list.append(2)
                     flip_info_l=np.array(([l for l in flip_info_l if l[4]!=0]),dtype=np.int)
 
-                if len(flip_info_lfar)>0 and len(np.where((800<=flip_info_lfar[:,2]) & (flip_info_lfar[:,2]<=1000))[0])>0:
-                    num_g=np.where((800<=flip_info_lfar[:,2]) & (flip_info_lfar[:,2]<=1000))[0]
+                if len(flip_info_lfar)>0 and len(np.where((750<=flip_info_lfar[:,2]) & (flip_info_lfar[:,2]<=950))[0])>0:
+                    num_g=np.where((750<=flip_info_lfar[:,2]) & (flip_info_lfar[:,2]<=950))[0]
                     for k in num_g:
                         keep=flip_info_lfar[k]
                         keep=keep.tolist()
@@ -253,8 +262,8 @@ try:
                     flip_info_lfar=np.array(([l for l in flip_info_lfar if l[4]!=0]),dtype=np.int)
 
                 #pakkun goal for small candy
-                if len(flip_info_r_s)>0 and len(np.where((800<=flip_info_r_s[:,2]) & (flip_info_r_s[:,2]<=1000))[0])>0:
-                    num_g=np.where((800<=flip_info_r_s[:,2]) & (flip_info_r_s[:,2]<=1000))[0]
+                if len(flip_info_r_s)>0 and len(np.where((750<=flip_info_r_s[:,2]) & (flip_info_r_s[:,2]<=950))[0])>0:
+                    num_g=np.where((750<=flip_info_r_s[:,2]) & (flip_info_r_s[:,2]<=950))[0]
                     for k in num_g:
                         keep=flip_info_r_s[k]
                         keep=keep.tolist()
@@ -271,8 +280,8 @@ try:
                     flip_info_r_s=np.array(([l for l in flip_info_r_s if l[4]!=0]),dtype=np.int)
 
 
-                if len(flip_info_rfar_s)>0 and len(np.where((800<=flip_info_rfar_s[:,2]) & (flip_info_rfar_s[:,2]<=1000))[0])>0:
-                    num_g=np.where((800<=flip_info_rfar_s[:,2]) & (flip_info_rfar_s[:,2]<=1000))[0]
+                if len(flip_info_rfar_s)>0 and len(np.where((750<=flip_info_rfar_s[:,2]) & (flip_info_rfar_s[:,2]<=950))[0])>0:
+                    num_g=np.where((750<=flip_info_rfar_s[:,2]) & (flip_info_rfar_s[:,2]<=950))[0]
                     for k in num_g:
                         keep=flip_info_rfar_s[k]
                         keep=keep.tolist()
@@ -288,8 +297,8 @@ try:
                     flip_info_rfar_s=np.array(([l for l in flip_info_rfar_s if l[4]!=0]),dtype=np.int)
 
 
-                if len(flip_info_l_s)>0 and len(np.where((800<=flip_info_l_s[:,2]) & (flip_info_l_s[:,2]<=1000))[0])>0:
-                    num_g=np.where((800<=flip_info_l_s[:,2]) & (flip_info_l_s[:,2]<=1000))[0]
+                if len(flip_info_l_s)>0 and len(np.where((750<=flip_info_l_s[:,2]) & (flip_info_l_s[:,2]<=950))[0])>0:
+                    num_g=np.where((750<=flip_info_l_s[:,2]) & (flip_info_l_s[:,2]<=950))[0]
                     for k in num_g:
                         keep=flip_info_l_s[k]
                         keep=keep.tolist()
@@ -304,8 +313,8 @@ try:
                             sound_list.append(2)
                     flip_info_l_s=np.array(([l for l in flip_info_l_s if l[4]!=0]),dtype=np.int)
 
-                if len(flip_info_lfar_s)>0 and len(np.where((800<=flip_info_lfar_s[:,2]) & (flip_info_lfar_s[:,2]<=1000))[0])>0:
-                    num_g=np.where((800<=flip_info_lfar_s[:,2]) & (flip_info_lfar_s[:,2]<=1000))[0]
+                if len(flip_info_lfar_s)>0 and len(np.where((750<=flip_info_lfar_s[:,2]) & (flip_info_lfar_s[:,2]<=950))[0])>0:
+                    num_g=np.where((750<=flip_info_lfar_s[:,2]) & (flip_info_lfar_s[:,2]<=950))[0]
                     for k in num_g:
                         keep=flip_info_lfar_s[k]
                         keep=keep.tolist()
@@ -601,7 +610,7 @@ try:
                     flip_info_l[num,0]+=np.array([1]*len(num[0]),dtype=np.int)
                     flip_info_l[num2,0]-=np.array([7]*len(num2[0]),dtype=np.int)
                     flip_info_l[num,2]+=np.array([5]*len(num[0]),dtype=np.int)
-                    flip_info_l[num2,2]+=np.array([5]*len(num[0]),dtype=np.int)
+                    flip_info_l[num2,2]+=np.array([5]*len(num2[0]),dtype=np.int)
 
                     flip_info_l[:,1]-=np.array([10]*len(flip_info_l),dtype=np.int)
                     #make parabola
@@ -695,11 +704,21 @@ try:
                 if len(info)>0 and len(np.where(info[:,2]==1100)[0])>0:
                     num_rain=np.where(info[:,2]==1100)[0]
                     for m in num_rain:
-                        if info[m][0]==0 or info[m][0]==25:
+                        if info[m][0]==0:
                             flip_rain_info=np.array(flip_rain_info)
                             flip_rain_info=flip_rain_info.tolist()
                             info[m][0]=4
                             flip_rain_info.append(info[m])
+
+                if len(info)>0 and len(np.where(info[:,2]==1095)[0])>0:
+                    num_rain=np.where(info[:,2]==1095)[0]
+                    for m in num_rain:
+                        if info[m][0]==25:
+                            flip_rain_info=np.array(flip_rain_info)
+                            flip_rain_info=flip_rain_info.tolist()
+                            info[m][0]=4
+                            flip_rain_info.append(info[m])
+
 
                 info=np.array(([i for i in info if (i[2]<=1100 and i[1]<=1100)]),dtype=np.int)
                 info=np.array(info)
@@ -754,7 +773,7 @@ try:
                 if cv2.waitKey(wait_time) >= 0:
                     break
                 j+=1
-                if j==600:
+                if j==320:
                     flag=1
                     print("your point={}".format(point))
                     break

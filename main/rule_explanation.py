@@ -14,9 +14,9 @@ import play_sound
 
 #OSC communication
 parser = argparse.ArgumentParser()
-parser.add_argument("--ip", default='127.0.0.1',
+parser.add_argument("--ip", default='192.168.3.11',
                     help="The ip of the OSC server")
-parser.add_argument("--port", type=int, default=5005,
+parser.add_argument("--port", type=int, default=5075,
                     help="The port the OSC server is listening on")
 args = parser.parse_args()
 client = udp_client.SimpleUDPClient(args.ip, args.port)
@@ -60,7 +60,7 @@ while not rospy.is_shutdown() and flag==0:
                 umb_index=100
                 #umbrella : 150<width<200 y~=115
                 for i in range(len(message_arrived.rects)):
-                    if message_arrived.rects[i].height<150 and message_arrived.rects[i].width<250:
+                    if message_arrived.rects[i].height<150 and 100<message_arrived.rects[i].width and message_arrived.rects[i].width<250:
                         umb_index=i
                 #print("rects={}".format(message_arrived.rects[umb_index]))
                 if umb_index!=100:
@@ -81,7 +81,7 @@ while not rospy.is_shutdown() and flag==0:
             if 200<um_pos_x and um_pos_x<340 and 1000<um_pos_y and um_pos_y<1100:
                 info=[[1,140,600,500,500],[2,650,600,500,500]]
                 break_flag=1 #次へ
-            elif 710<um_pos_x and um_pos_x<850 and 1000<um_pos_y and um_pos_y<1100:
+            if 710<um_pos_x and um_pos_x<850 and 1000<um_pos_y and um_pos_y<1100:
                 info=[[0,140,600,500,500],[3,650,600,500,500]]
                 break_flag=2
                 flag=1 #rule_explanation.py自体を抜ける
@@ -339,7 +339,7 @@ while not rospy.is_shutdown() and flag==0:
                 umb_index=100
                 #umbrella : 150<width<200 y~=115
                 for i in range(len(message_arrived.rects)):
-                    if message_arrived.rects[i].height<150 and message_arrived.rects[i].width<250:
+                    if message_arrived.rects[i].height<150 and 100<message_arrived.rects[i].width and message_arrived.rects[i].width<250:
                         umb_index=i
                 #print("rects={}".format(message_arrived.rects[umb_index]))
 
@@ -513,7 +513,7 @@ while not rospy.is_shutdown() and flag==0:
                 umb_index=100
                 #umbrella : 150<width<200 y~=115
                 for i in range(len(message_arrived.rects)):
-                    if message_arrived.rects[i].height<150 and message_arrived.rects[i].width<250:
+                    if message_arrived.rects[i].height<150 and 100<message_arrived.rects[i].width and message_arrived.rects[i].width<250:
                         umb_index=i
                 #print("rects={}".format(message_arrived.rects[umb_index]))
 
@@ -887,7 +887,7 @@ while not rospy.is_shutdown() and flag==0:
                 umb_index=100
                 #umbrella : 150<width<200 y~=115
                 for i in range(len(message_arrived.rects)):
-                    if message_arrived.rects[i].height<150 and message_arrived.rects[i].width<250:
+                    if message_arrived.rects[i].height<150 and 100<message_arrived.rects[i].width and message_arrived.rects[i].width<250:
                         umb_index=i
                 #print("rects={}".format(message_arrived.rects[umb_index]))
 

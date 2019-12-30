@@ -10,3 +10,5 @@ def play_sound(music,sleep):
     pygame.mixer.music.play(1) #do
     time.sleep(sleep)
     pygame.mixer.music.stop() #finish
+
+#play_sound("./sounds/kirarin.mp3",6)
