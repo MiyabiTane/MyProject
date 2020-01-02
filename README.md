@@ -1,8 +1,44 @@
 # 自主プロ
 ## 🍬あめが降る☔
-プロジェクターでスクリーンに飴や雨が降ってくる動画を映します。
-飴を傘で弾き返して右下or左下の箱に入れられればポイント獲得！雨にあたってしまうとマイナスポイントです。
-傘に何が当たったかによって光や音、振動が変化する予定。<br>
+「空から雨じゃなくて飴が降ってきてほしい！」という発想から、映像のあめを本物の傘で弾いて遊ぶゲームを作ってみました。<br>
+完成作品の動画は[こちらをクリックして](https://www.youtube.com/watch?v=xAr7pQ0Ds3o&feature=youtu.be)見て下さい。<br>
+<img width="200" src="./for_README/amegafuru.jpg"><br>
+
+### 実装方法
+使うプログラムはmainに入ってるもの全てです。プロジェクターをPCに接続してPCのディスプレイ設定でミラーを選択します。<br>
+<br>
+まず、PC上でCoral TPUを立ち上げます。<br>
+```bash
+ roscore
+```
+```bash
+ source /opt/ros/melodic/setup.bash
+ rosrun usb_cam usb_cam_node
+```
+```bash
+ source /opt/ros/melodic/setup.bash
+ source ~/coral_ws/devel/setup.bash
+ roslaunch coral_usb edgetpu_object_detector.launch INPUT_IMAGE:=/usb_cam/image_raw
+```
+```bash
+ source /opt/ros/melodic/setup.bash
+ rosrun image_view image_view image:=/edgetpu_object_detector/output/image
+```
+```bash
+ rosrun rqt_reconfigure rqt_reconfigure
+```
+値は0.1くらいに設定します。プロジェクターから映し出された画像とCoral TPUの画像処理結果の画像の画角を合わせておきます。<br>
+<br>
+次に、Raspberry Pi上で
+```bash
+sudo python3 ./rasp_server.py
+```
+<br>
+最後に、PC上で
+```bash
+python3 ./whole_game.py
+```
+これでゲームが始まります。<br>
 
 ### 〜ソフト編〜
 #### 使うもの（予定）
@@ -93,7 +129,7 @@ ifconfigで受信側のIPアドレスを調べて、サーバー側で`./oscer I
 * Raspberry pi
 * LEDテープ
 * 振動モーター
-* スピーカー
+* ~~スピーカー~~
 
 ### Raspberry piの基本<br>
 ラズパイのセットアップやピンの位置など、ラズパイの詳細については[BDMのREADME.md](https://github.com/MiyabiTane/BDM)参照。<br>
