@@ -29,12 +29,12 @@
 ```
 値は0.1くらいに設定します。プロジェクターから映し出された画像とCoral TPUの画像処理結果の画像の画角を合わせておきます。<br>
 <br>
-次に、Raspberry Pi上で
+次に、Raspberry Pi上で<br>
 ```bash
 sudo python3 ./rasp_server.py
 ```
 <br>
-最後に、PC上で
+最後に、PC上で<br>
 ```bash
 python3 ./whole_game.py
 ```
