@@ -31,12 +31,12 @@
 <br>
 次に、Raspberry Pi上で<br>
 ```bash
- sudo python3 ./rasp_server.py
+ main$ sudo python3 ./rasp_server.py
 ```
 <br>
 最後に、PC上で<br>
 ```bash
- python3 ./whole_game.py
+ main$ python3 ./whole_game.py
 ```
 <br>
 これでゲームが始まります。<br>
