@@ -38,6 +38,7 @@
 ```bash
  python3 ./whole_game.py
 ```
+<br>
 これでゲームが始まります。<br>
 
 ### 〜ソフト編〜
