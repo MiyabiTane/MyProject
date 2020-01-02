@@ -35,7 +35,7 @@
 ```
 <br>
 最後に、PC上で<br>
-```bash
+```
  python3 ./whole_game.py
 ```
 これでゲームが始まります。<br>
