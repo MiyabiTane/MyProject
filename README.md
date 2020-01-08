@@ -1,7 +1,7 @@
 # 自主プロ
 ## 🍬あめが降る☔
 「空から雨じゃなくて飴が降ってきてほしい！」という発想から、映像のあめを本物の傘で弾いて遊ぶゲームを作ってみました。<br>
-完成作品の動画は[こちらをクリックして](https://www.youtube.com/watch?v=xAr7pQ0Ds3o&feature=youtu.be)見て下さい。<br>
+完成作品の動画は[こちらをクリックして](https://youtu.be/tPj1YixP_yI)見て下さい。<br>
 <img width="200" src="./for_README/amegafuru.jpg"><br>
 
 ### 実装方法
@@ -33,12 +33,10 @@
 ```bash
  sudo python3 ./rasp_server.py
 ```
-<br>
 最後に、PC上で<br>
 ```bash
  python3 ./whole_game.py
 ```
-<br>
 これでゲームが始まります。<br>
 
 ### 〜ソフト編〜
