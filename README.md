@@ -4,7 +4,7 @@
 完成作品の動画は[こちらをクリックして](https://youtu.be/tPj1YixP_yI)見て下さい。<br>
 <img width="200" src="./for_README/amegafuru.jpg"><br>
 
-### 実装方法
+### 実行方法
 使うプログラムはmainに入ってるもの全てです。プロジェクターをPCに接続してPCのディスプレイ設定でミラーを選択します。<br>
 <br>
 まず、PC上でCoral TPUを立ち上げます。<br>
